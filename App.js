@@ -42,6 +42,15 @@ export default function App() {
   const [ratingsListMyCol, setRatingsListMyCol] = useState()
   const [ratingsTotals, setRatingsTotals] = useState([])
 
+  const initUser = async () => {
+    await AsyncStorage.setItem('weights', [0, 0, 0, 0, 0, 0, 0, 0]);
+    await AsyncStorage.setItem(rKey); // Not implemented at all
+  };
+
+
+
+
+
   let blankRating = [0, 0, 0, 0, 0, 0, 0, 0]
   const [ratingsL, setRatingsL] = useState(blankRating)
 
@@ -164,7 +173,7 @@ export default function App() {
   useEffect(() => {
     console.log()
     console.log('UE_3_ratingsTotals - ')
-    console.log(ratingsTotals)
+    // console.log(ratingsTotals) //attempt fix remove
     console.log()
   }, [ratingsTotals])
 
@@ -384,9 +393,9 @@ export default function App() {
     // console.log('weights - ')
     // console.log(weights)
   };
-
-  
-
+////
+////
+////
   const updateWeights = async () => {
     try {
       const jsonValue = await AsyncStorage.getItem('weights');
@@ -845,7 +854,7 @@ export default function App() {
                 console.log()
                 getRating(colleges[i].ratingKey)
                 console.log('ratingsTotals - ')
-                console.log(ratingsTotals)
+                // console.log(ratingsTotals) //attempt fix remove
               }
               console.log('------AFTER------')
               console.log()
