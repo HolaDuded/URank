@@ -48,20 +48,22 @@ export default function App() {
     await AsyncStorage.setItem('firstTime', 'true');
 
     let isFirstTime = await AsyncStorage.getItem('firstTime');
-    console.log('response - ')
-    console.log(await AsyncStorage.getItem('firstTime'))
+    console.log('response - ');
+    console.log(await AsyncStorage.getItem('firstTime'));
     if (isFirstTime==null){
-      setFirstTime('true')
-      console.log('firstTime - ' + firstTime)
+      setFirstTime('true');
+      console.log('firstTime - ' + firstTime);
       await AsyncStorage.setItem('firstTime', 'true');
       
         await AsyncStorage.setItem('weights', JSON.stringify([0, 0, 0, 0, 0, 0, 0, 0]));
+        await AsyncStorage.setItem('ratingKeyselect', JSON.stringify([0, 0, 0, 0, 0, 0, 0, 0]));
         await AsyncStorage.setItem('collegeList', JSON.stringify([{label: 'Select a College', value: 'select', ratingKey: 'ratingKeyselect', key: uuid.v4()}]));
-        await AsyncStorage.setItem(rKey); // Not implemented at all
+        await AsyncStorage.setItem('valueT', JSON.stringify([{label: 'Select a College', value: 'select', ratingKey: 'ratingKeyselect', key: uuid.v4()}]));
+        // await AsyncStorage.setItem(rKey); // Not implemented at all
     }
     
     else{
-        setFirstTime('false')
+        setFirstTime('false');
     }
 
   };
