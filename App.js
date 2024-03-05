@@ -1,13 +1,15 @@
 import { StatusBar } from 'expo-status-bar';
 // import {} from 'expo';
 {/* <StatusBar style="dark" /> */}
-import React, { Component, useState, useEffect } from 'react';
+import React, { Component, useState, useEffect, useCallback } from 'react';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { AppRegistry, Text, View, StyleSheet, Image, FlatList, SectionList, TextInput, Modal, ImageBackground, TouchableOpacity, TouchableHighlight, Alert, Dimensions, SafeAreaView, ScrollView } from 'react-native';
 import Constants from 'expo-constants';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import uuid from 'react-native-uuid';
+
+import * as SplashScreen from 'expo-splash-screen';
 
   ////////////////////////
  ///  npx expo start  ///
@@ -33,8 +35,61 @@ let iconBackgroundHeight = taskbarHeight*1.2;
 let iconColor = '#47e7a9';
 let colorOfText = '#fdfeff';
 
+SplashScreen.preventAutoHideAsync();
 
 export default function App() {
+
+  const [appIsReady, setAppIsReady] = useState(false);
+
+  useEffect(() => {
+    async function prepare() {
+      try {
+        // await new Promise(resolve => setTimeout(resolve, 2));
+        let hasSplashed = false
+        try{
+          hasSplashed = await AsyncStorage.getItem(splashed)
+        }catch(e){
+          hasSplashed = false
+        }
+        console.log('VERSION 0.2.7');
+        if (hasSplashed==false){
+          console.log('hasSplashed - ')
+          console.log(hasSplashed)
+          await new Promise(resolve => setTimeout(resolve, 2));
+          setAppIsReady(true);
+          await AsyncStorage.setItem('splashed', true)
+          hasSplashed = false
+        }
+      } catch (e) {
+        console.warn(e);
+      } finally {
+        console.log('Finally Statement L65')
+      }
+    }
+
+    prepare();
+  }, []);
+
+  const onLayoutRootView = useCallback(async () => {
+    if (appIsReady) {
+      // This tells the splash screen to hide immediately! If we call this after
+      // `setAppIsReady`, then we may see a blank screen while the app is
+      // loading its initial state and rendering its first pixels. So instead,
+      // we hide the splash screen once we know the root view has already
+      // performed layout.
+      await SplashScreen.hideAsync();
+    }
+  }, [appIsReady]);
+
+
+
+  if (!appIsReady) {
+    return null;
+  }
+
+
+
+
 
   const [valueT, setValueT] = useState([{label: 'Select a College', value: 'select', ratingKey: 'ratingKeyselect', key: uuid.v4()}])
 //   const [semiOldVal, setSemiOldVal] = useState('select')
@@ -45,6 +100,9 @@ export default function App() {
   const [firstTime, setFirstTime] = useState('true')
 
   const initUser = async () => {
+
+    prepare();
+
     await AsyncStorage.setItem('firstTime', 'true');
 
     let isFirstTime = await AsyncStorage.getItem('firstTime');
@@ -777,6 +835,33 @@ export default function App() {
   //   .map((item, i) => 
   //       <div key={i}> {item.rating}</div>
   //   );
+
+  // const [showSplash, setShowSplash] = useState(true);
+  //    useEffect(() => {
+  //     AsyncStorage.getItem('alreadyLaunched').then(value => {
+  //         if(value == null){
+  //            setTimeout(() => {
+  //         setShowSplash(false)
+  //       },5000)
+  //           AsyncStorage.setItem('alreadyLaunched','true');
+  //           setIsFirstLaunch(true);
+  //         }else{
+  //           setIsFirstLaunch(false);
+  //         }
+  //     })
+  //  },[]);
+    
+  
+
+  // if (showSplash){
+  //   return (
+  //     <SplashScreen/>
+  //   )
+  // }
+
+
+  
+
 
 
   return (
