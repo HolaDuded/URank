@@ -37,14 +37,33 @@ let colorOfText = '#fdfeff';
 export default function App() {
 
   const [valueT, setValueT] = useState([{label: 'Select a College', value: 'select', ratingKey: 'ratingKeyselect', key: uuid.v4()}])
-  const [semiOldVal, setSemiOldVal] = useState('select')
+//   const [semiOldVal, setSemiOldVal] = useState('select')
   const [oldVal, setOldVal] = useState('select')
-  const [ratingsListMyCol, setRatingsListMyCol] = useState()
+//   const [ratingsListMyCol, setRatingsListMyCol] = useState()
   const [ratingsTotals, setRatingsTotals] = useState([])
 
+  const [firstTime, setFirstTime] = useState('true')
+
   const initUser = async () => {
-    await AsyncStorage.setItem('weights', [0, 0, 0, 0, 0, 0, 0, 0]);
-    await AsyncStorage.setItem(rKey); // Not implemented at all
+    await AsyncStorage.setItem('firstTime', 'true');
+
+    let isFirstTime = await AsyncStorage.getItem('firstTime');
+    console.log('response - ')
+    console.log(await AsyncStorage.getItem('firstTime'))
+    if (isFirstTime==null){
+      setFirstTime('true')
+      console.log('firstTime - ' + firstTime)
+      await AsyncStorage.setItem('firstTime', 'true');
+      
+        await AsyncStorage.setItem('weights', JSON.stringify([0, 0, 0, 0, 0, 0, 0, 0]));
+        await AsyncStorage.setItem('collegeList', JSON.stringify([{label: 'Select a College', value: 'select', ratingKey: 'ratingKeyselect', key: uuid.v4()}]));
+        await AsyncStorage.setItem(rKey); // Not implemented at all
+    }
+    
+    else{
+        setFirstTime('false')
+    }
+
   };
 
 
@@ -175,6 +194,18 @@ export default function App() {
     console.log('UE_3_ratingsTotals - ')
     // console.log(ratingsTotals) //attempt fix remove
     console.log()
+
+    if (colleges.length==0){
+        setColleges({label: 'Select a College', value: 'select', ratingKey: 'ratingKeyselect', key: uuid.v4()})
+    }
+    else{
+        console.log()
+        console.log('UE_3_colleges - ')
+        console.log(colleges)
+        console.log()
+    }
+
+
   }, [ratingsTotals])
 
   const updateRatingsL = async (key) => {
@@ -249,28 +280,33 @@ export default function App() {
     try {
       const jsonValue = await AsyncStorage.getItem('collegeList');
       const pasredJSONValue = JSON.parse(jsonValue);
-      if (value!=null){
+      if (pasredJSONValue!=null){
+        console.log('UpdateColleges_pasredJSONValue - ')
+        console.log(pasredJSONValue)
+        console.log('UpdateColleges_value - ')
+        console.log(value)
         setValueT(pasredJSONValue)
         
           // return value
         
       }
     } catch (e) {
+      console.log('updateCollegesError - ')
       console.log(e)
     }
   };
 
-  const getDataJSON = async (key) => {
-    try {
-      const jsonValue = await AsyncStorage.getItem(key);
-      const value = JSON.parse(jsonValue);
-      if (value!=null){
-        return value
-      }
-    } catch (e) {
-      console.log(e)
-    }
-  };
+//   const getDataJSON = async (key) => {
+//     try {
+//       const jsonValue = await AsyncStorage.getItem(key);
+//       const value = JSON.parse(jsonValue);
+//       if (value!=null){
+//         return value
+//       }
+//     } catch (e) {
+//       console.log(e)
+//     }
+//   };
   
 
 
@@ -408,6 +444,7 @@ export default function App() {
         // return value
       }
     } catch (e) {
+      console.log('updateWeightsError - ')
       console.log(e)
     }
   };
@@ -742,7 +779,7 @@ export default function App() {
 
   return (
     <SafeAreaProvider>
-      <View style={styles.container}>
+      <View style={styles.container}>{firstTime=='false' ? (<>
         <View style={{backgroundColor: color, position:'absolute', top:0, left:0, width: deviceWidth, height:deviceHeightPart*1.5}}></View>
         <SafeAreaView>
         <View style={{overflow: 'hidden', paddingBottom: 5}}>
@@ -751,7 +788,7 @@ export default function App() {
           </View>
         </View>
         <View style={styles.topTaskbar}>
-          <DropDownPicker
+          <DropDownPicker //attempt to isolate filter error of none property
             open = {open}
             value = {value}
             items = {colleges}
@@ -950,7 +987,7 @@ export default function App() {
                   </SafeAreaView>
                 </Modal>
 
-              <ScrollView style={{height: (deviceHeightPart*2)*16}}>
+              <ScrollView style={{height: (deviceHeight)}}>
 
                 <View style={{height: deviceHeightPart*2, backgroundColor: sectionBackgroundColor, border: 'gray', marginTop: 5, justifyContent: 'right', marginLeft: 5, flexDirection: 'row', alignItems: 'center', marginBottom: 5, borderWidth: 1, borderRadius: 10, width: deviceWidth-10, }}>
                 <View style={{width:(7.3*(deviceWidth))/10}}><Text style={styles.factors}>{factors[0].name}</Text></View>
@@ -1188,6 +1225,7 @@ export default function App() {
                 <View style={{height: deviceHeightPart*2, backgroundColor: littleSection, zIndex: -1, border: 'gray', marginTop: 5, justifyContent: 'center', marginLeft: 5, flexDirection: 'row', alignItems: 'center', marginBottom: 5, borderWidth: 1, borderRadius: 15, width: deviceWidth-10, }}>
                   <View><Text style={{fontSize: deviceHeightPart, shadowOpacity: 0.5, color: 'white', fontWeight: 'bold', margin: 5}}>{colleges[colleges.findIndex(e => e.value == value)].label}</Text></View>
                 </View>
+                <View style={{}}>
                 <ScrollView style={{height: (deviceHeightPart*2)*16}}>
                   <View style={{height: deviceHeightPart*2, backgroundColor: sectionBackgroundColor, zIndex: -1, border: 'gray', marginTop: 5, justifyContent: 'right', marginLeft: 5, flexDirection: 'row', alignItems: 'center', marginBottom: 5, borderWidth: 1, borderRadius: 10, width: deviceWidth-10, }}>
                   <View style={{width:(7.3*(deviceWidth))/10}}><Text style={styles.factors}>{factors[0].name}</Text></View>
@@ -1383,6 +1421,7 @@ export default function App() {
                   {/* <TouchableHighlight onPress={() => setFactors(initFactors)}><Text>RESET FACTORS</Text></TouchableHighlight> */}
                   <View style={{zIndex: -100000, height: deviceHeightPart*25, justifyContent: 'flex-end',}}></View>
                   </ScrollView>
+                  </View>
                 </>) : null}</View>
 
               
@@ -1414,7 +1453,26 @@ export default function App() {
           
           </View> */}
         </SafeAreaView>
-      </View>
+        </>) : null}</View>
+
+
+        <View style={styles.container}>{firstTime=='true' ? (<>
+
+            <TouchableOpacity style={{margin: 5}} onPress={() => {initUser()}}>{/*</TouchableOpacity></SafeAreaView>, Alert.alert('Modal Closed'), console.log('Modal Closed')}}>*/}
+                <View style={{height: deviceHeightPart*1.5, margin: 2, borderWidth: 1, borderRadius: 5, backgroundColor: iconColor, textAlign: 'center', justifyContent: 'center', alignItems: 'center'}}>
+                    <Text style={{fontSize: deviceHeightPart-10, margin: 0}}>Initialize User Data</Text>
+                </View>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={{margin: 5}} onPress={() => {onCollegesValueChange()}}>{/*</TouchableOpacity></SafeAreaView>, Alert.alert('Modal Closed'), console.log('Modal Closed')}}>*/}
+                <View style={{height: deviceHeightPart*1.5, margin: 2, borderWidth: 1, borderRadius: 5, backgroundColor: iconColor, textAlign: 'center', justifyContent: 'center', alignItems: 'center'}}>
+                    <Text style={{fontSize: deviceHeightPart-10, margin: 0}}>Test Func</Text>
+                </View>
+            </TouchableOpacity>
+
+        </>) : null}</View>
+
+
     </SafeAreaProvider>
   );
 }
