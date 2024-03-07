@@ -1,4 +1,4 @@
-import { StatusBar } from 'expo-status-bar';
+// import { StatusBar } from 'expo-status-bar';
 // import {} from 'expo';
 {/* <StatusBar style="dark" /> */}
 import React, { Component, useState, useEffect, useCallback } from 'react';
@@ -45,87 +45,104 @@ export default function App() {
     async function prepare() {
       try {
         // await new Promise(resolve => setTimeout(resolve, 2));
-        let hasSplashed = false
+        let hasSplashed = 'false';
+        let hasNotVered = true;
         try{
-          hasSplashed = await AsyncStorage.getItem(splashed)
+          // hasSplashed = await AsyncStorage.getItem(splashed);
         }catch(e){
-          hasSplashed = false
+          hasSplashed = 'false';
         }
-        console.log('VERSION 0.2.7');
-        if (hasSplashed==false){
-          console.log('hasSplashed - ')
-          console.log(hasSplashed)
-          await new Promise(resolve => setTimeout(resolve, 2));
+        if (hasNotVered){
+          console.log('VERSION 0.2.7');
+          hasNotVered = false
+        }
+        if (hasSplashed=='false'){
+          console.log()
+          console.log('hasSplashed - ');
+          console.log(hasSplashed);
+          console.log()
+          await new Promise(resolve => setTimeout(resolve, 200));
           setAppIsReady(true);
-          await AsyncStorage.setItem('splashed', true)
-          hasSplashed = false
+          // await AsyncStorage.setItem('splashed', 'true');
+          hasSplashed = 'true';
         }
       } catch (e) {
         console.warn(e);
       } finally {
-        console.log('Finally Statement L65')
+        // console.log('Finally Statement L65');
       }
     }
 
     prepare();
   }, []);
 
-  const onLayoutRootView = useCallback(async () => {
-    if (appIsReady) {
-      // This tells the splash screen to hide immediately! If we call this after
-      // `setAppIsReady`, then we may see a blank screen while the app is
-      // loading its initial state and rendering its first pixels. So instead,
-      // we hide the splash screen once we know the root view has already
-      // performed layout.
-      await SplashScreen.hideAsync();
+  useEffect(() => {
+    async function doFuncThing() {
+      if (appIsReady) {
+        // This tells the splash screen to hide immediately! If we call this after
+        // `setAppIsReady`, then we may see a blank screen while the app is
+        // loading its initial state and rendering its first pixels. So instead,
+        // we hide the splash screen once we know the root view has already
+        // performed layout.
+        await SplashScreen.hideAsync();
+      }
     }
+    doFuncThing();
   }, [appIsReady]);
 
 
 
-  if (!appIsReady) {
-    return null;
-  }
+  // if (!appIsReady) {
+  //   return null;
+  // }
 
 
 
 
 
-  const [valueT, setValueT] = useState([{label: 'Select a College', value: 'select', ratingKey: 'ratingKeyselect', key: uuid.v4()}])
+  // const [valueT, setValueT] = useState([{label: 'Select a College', value: 'select', ratingKey: 'ratingKeyselect', key: uuid.v4()}])
+  const [valueT, setValueT] = useState(JSON.parse(AsyncStorage.getItem('valueT')))
 //   const [semiOldVal, setSemiOldVal] = useState('select')
   const [oldVal, setOldVal] = useState('select')
 //   const [ratingsListMyCol, setRatingsListMyCol] = useState()
   const [ratingsTotals, setRatingsTotals] = useState([])
 
   const [firstTime, setFirstTime] = useState('true')
-
-  const initUser = async () => {
-
-    prepare();
-
-    await AsyncStorage.setItem('firstTime', 'true');
-
-    let isFirstTime = await AsyncStorage.getItem('firstTime');
-    console.log('response - ');
-    console.log(await AsyncStorage.getItem('firstTime'));
-    if (isFirstTime==null){
-      setFirstTime('true');
-      console.log('firstTime - ' + firstTime);
-      await AsyncStorage.setItem('firstTime', 'true');
-      
-        await AsyncStorage.setItem('weights', JSON.stringify([0, 0, 0, 0, 0, 0, 0, 0]));
-        await AsyncStorage.setItem('ratingKeyselect', JSON.stringify([0, 0, 0, 0, 0, 0, 0, 0]));
-        await AsyncStorage.setItem('collegeList', JSON.stringify([{label: 'Select a College', value: 'select', ratingKey: 'ratingKeyselect', key: uuid.v4()}]));
-        await AsyncStorage.setItem('valueT', JSON.stringify([{label: 'Select a College', value: 'select', ratingKey: 'ratingKeyselect', key: uuid.v4()}]));
-        // await AsyncStorage.setItem(rKey); // Not implemented at all
+ 
+  useEffect(() => {
+    async function initUser() {
+      // await AsyncStorage.setItem('firstTime', 'true');
+      // await new Promise(resolve => setTimeout(resolve, 200));
+      async function firstUser(isFirstTime){
+        // console.log('isinfirstuserfunc') // Testing log
+        if (!(isFirstTime==false)){
+          setFirstTime('true');
+          // console.log('firstTime - ' + firstTime); //Removed to reduce log spam
+          await AsyncStorage.setItem('firstTime', 'false');
+          
+          await AsyncStorage.setItem('weights', JSON.stringify([0, 0, 0, 0, 0, 0, 0, 0]));
+          await AsyncStorage.setItem('ratingKeyselect', JSON.stringify([0, 0, 0, 0, 0, 0, 0, 0]));
+          await AsyncStorage.setItem('collegeList', JSON.stringify([{label: 'Select a College', value: 'select', ratingKey: 'ratingKeyselect', key: uuid.v4()}]));
+          await AsyncStorage.setItem('valueT', JSON.stringify([{label: 'Select a College', value: 'select', ratingKey: 'ratingKeyselect', key: uuid.v4()}]));
+          // await AsyncStorage.setItem(rKey); // Not implemented at all // Doesn't need to be implemented?
+  
+          setFirstTime('false')
+  
+        }
+        else{
+            setFirstTime('false');
+        }
+      }
+      let isFirstTime = await AsyncStorage.getItem('firstTime');
+      await isFirstTime.JSON(firstUser(isFirstTime))
+      // console.log('response - ');
+      // console.log(await AsyncStorage.getItem('firstTime')); // Removed to reduce log spam
+      // console.log('isFirstTime - ');
+      // console.log(isFirstTime);
     }
-    
-    else{
-        setFirstTime('false');
-    }
+    initUser();
 
-  };
-
+    }, [] )
 
 
 
@@ -250,19 +267,19 @@ export default function App() {
   };
 
   useEffect(() => {
-    console.log()
-    console.log('UE_3_ratingsTotals - ')
-    // console.log(ratingsTotals) //attempt fix remove
-    console.log()
+    // console.log()
+    // console.log('UE_3_ratingsTotals - ')
+    // console.log(ratingsTotals) // Removed to reduce log spam
+    // console.log()
 
     if (colleges.length==0){
         setColleges({label: 'Select a College', value: 'select', ratingKey: 'ratingKeyselect', key: uuid.v4()})
     }
     else{
-        console.log()
-        console.log('UE_3_colleges - ')
-        console.log(colleges)
-        console.log()
+        // console.log()
+        // console.log('UE_3_colleges - ')
+        // console.log(colleges)
+        // console.log()
     }
 
 
@@ -341,10 +358,10 @@ export default function App() {
       const jsonValue = await AsyncStorage.getItem('collegeList');
       const pasredJSONValue = JSON.parse(jsonValue);
       if (pasredJSONValue!=null){
-        console.log('UpdateColleges_pasredJSONValue - ')
-        console.log(pasredJSONValue)
-        console.log('UpdateColleges_value - ')
-        console.log(value)
+        // console.log('UpdateColleges_pasredJSONValue - ')
+        // console.log(pasredJSONValue)
+        // console.log('UpdateColleges_value - ')
+        // console.log(value)
         setValueT(pasredJSONValue)
         
           // return value
@@ -370,24 +387,25 @@ export default function App() {
   
 
 
-  useEffect(() => {
-    console.log('-----useEffect-----')
+  useEffect(() => { //removed log spamming
+    // console.log('-----useEffect-----')
     setViewedWeights()
     updateColleges()
     // setColleges(valueT)
-    console.log('-----useEffect-----')
-  }, []);
+    // setColleges(valueT)
+    // console.log('-----useEffect-----')
+  }, [valueT]);
   
-  useEffect(() => {
-    // console.log(),
-    // console.log('UC_pasredJSONValue - '),
-    // console.log(pasredJSONValue),
-    // console.log(),
-    // console.log('UE_2_valueT - '),
-    // console.log(valueT),
-    setColleges(valueT)
+//   useEffect(() => {
+//     // console.log(),
+//     // console.log('UC_pasredJSONValue - '),
+//     // console.log(pasredJSONValue),
+//     // console.log(),
+//     // console.log('UE_2_valueT - '),
+//     // console.log(valueT),
+//     setColleges(valueT)
     
-  }, [valueT])
+//   }, [valueT])
 
   useEffect(() => {
     // console.log()
@@ -875,7 +893,7 @@ export default function App() {
           </View>
         </View>
         <View style={styles.topTaskbar}>
-          <DropDownPicker //attempt to isolate filter error of none property
+          <DropDownPicker
             open = {open}
             value = {value}
             items = {colleges}
