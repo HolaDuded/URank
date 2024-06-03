@@ -101,7 +101,8 @@ export default function App() {
 
 
   // const [valueT, setValueT] = useState([{label: 'Select a College', value: 'select', ratingKey: 'ratingKeyselect', key: uuid.v4()}])
-  const [valueT, setValueT] = useState(JSON.parse(AsyncStorage.getItem('valueT')))
+  // const [valueT, setValueT] = useState(JSON.parse(AsyncStorage.getItem('valueT')))
+  const [valueT, setValueT] = useState(JSON.stringify([{label: 'Select a College', value: 'select', ratingKey: 'ratingKeyselect', key: uuid.v4()}]))
 //   const [semiOldVal, setSemiOldVal] = useState('select')
   const [oldVal, setOldVal] = useState('select')
 //   const [ratingsListMyCol, setRatingsListMyCol] = useState()
@@ -115,7 +116,7 @@ export default function App() {
       // await new Promise(resolve => setTimeout(resolve, 200));
       async function firstUser(isFirstTime){
         // console.log('isinfirstuserfunc') // Testing log
-        if (!(isFirstTime==false)){
+        if (!(isFirstTime=='false')){
           setFirstTime('true');
           // console.log('firstTime - ' + firstTime); //Removed to reduce log spam
           await AsyncStorage.setItem('firstTime', 'false');
@@ -134,7 +135,8 @@ export default function App() {
         }
       }
       let isFirstTime = await AsyncStorage.getItem('firstTime');
-      await isFirstTime.JSON(firstUser(isFirstTime))
+      // await isFirstTime.JSON(firstUser(isFirstTime))
+      await (firstUser(isFirstTime))
       // console.log('response - ');
       // console.log(await AsyncStorage.getItem('firstTime')); // Removed to reduce log spam
       // console.log('isFirstTime - ');
@@ -420,14 +422,14 @@ export default function App() {
 
   let removeValueCollage = (index) => {
     let newArr = valueT
-    newArr.splice(index+1, 1)
+    newArr.splice(index + 1, 1)
     storeDataJSON('collegeList', newArr)
     updateColleges('collegeList')
   };
 
   let addCollege = (nameI, valueI) => {
     const newList = valueT.concat({label: nameI, value: valueI, ratingKey: 'ratingKey'+valueI, key: uuid.v4()})
-    addRating('ratingKey'+valueI, [0, 0, 0, 0, 0, 0, 0, 0])
+    addRating('ratingKey' + valueI, [0, 0, 0, 0, 0, 0, 0, 0])
     setValueT(newList)
     storeDataJSON('collegeList', newList)
     updateColleges('collegeList')
@@ -765,7 +767,7 @@ export default function App() {
     {label: 'Home', value: 'home', icon: () => <Image source={homeWhite} style={{height: 25, width: 25}} />},
     {label: 'My Colleges', value: 'myColleges', icon: () => <Image source={collegeWhite} style={{height: 25, width: 25}} />},
     {label: 'Settings', value: 'settings', icon: () => <Image source={settingsWhite} style={{height: 25, width: 25}} />},
-    // {label: 'Dev Menu', value: 'devMenu', icon: () => <Image source={settingsWhite} style={{height: 25, width: 25}} />},
+    {label: 'Dev Menu', value: 'devMenu', icon: () => <Image source={settingsWhite} style={{height: 25, width: 25}} />},
     
   ]);
   
@@ -893,7 +895,7 @@ export default function App() {
           </View>
         </View>
         <View style={styles.topTaskbar}>
-          <DropDownPicker
+          {/*<DropDownPicker
             open = {open}
             value = {value}
             items = {colleges}
@@ -906,6 +908,7 @@ export default function App() {
             onChangeValue={(changeValue) => {
               onCollegesValueChange(changeValue)
             }}
+
             closeAfterSelecting = {true}
             showBadgeDot = {false}
             theme = "DARK"
@@ -914,7 +917,8 @@ export default function App() {
             listMode = "MODAL"
             modalAnimationType="slide"
 
-            style={{ width: deviceWidth/2, height: taskbarHeight+10, position: 'absolute', left: 0, top: 0, margin: 5, marginTop: 0}}/>
+          style={{ width: deviceWidth/2, height: taskbarHeight+10, position: 'absolute', left: 0, top: 0, margin: 5, marginTop: 0}}/>
+          */}
         </View>
         <View style={{position: 'absolute', top: -deviceHeightPart*3, right: (2*deviceWidth/6)-7.5,}}>{valueMenu=='home' ? (<>
           <View style={{backgroundColor: iconColor, borderWidth: 1, position: 'absolute', top: deviceHeightPart*5.5, right: 0, marginTop: 5, borderRadius: 150, height: taskbarHeight+10, width: iconWidth+10}}></View>
@@ -1035,6 +1039,8 @@ export default function App() {
               <TouchableOpacity onPress={() => {setViewedWeights().then(Alert.alert('Viewed Weights Set'))}} style={styles.devMenuItem}><Text style={styles.devMenuItemText}>setViewedWeights</Text></TouchableOpacity>
               <TouchableOpacity onPress={() => {storeDataJSON('collegeList', initColleges), updateColleges('collegeList'), Alert.alert('All personalized colleges cleared')}} style={styles.devMenuItem}><Text style={styles.devMenuItemText}>resetColleges</Text></TouchableOpacity>
               <TouchableOpacity onPress={() => {console.log(ratingsTotals)}} style={styles.devMenuItem}><Text style={styles.devMenuItemText}>logList</Text></TouchableOpacity>
+              <TouchableOpacity onPress={async () => {await AsyncStorage.setItem('firstTime', 'true')}} style={styles.devMenuItem}><Text style={styles.devMenuItemText}>resetFirstTime</Text></TouchableOpacity>
+              <TouchableOpacity onPress={async () => {await AsyncStorage.clear()}} style={styles.devMenuItem}><Text style={styles.devMenuItemText}>clearAsyncStorage</Text></TouchableOpacity>
             
             </View>
 {/*<TouchableOpacity style={styles.devMenuItem}><Text style={styles.devMenuItemText}></Text></TouchableOpacity>*/}
@@ -1561,21 +1567,21 @@ export default function App() {
         </>) : null}</View>
 
 
-        <View style={styles.container}>{firstTime=='true' ? (<>
+        {/* <View style={styles.container}>{firstTime=='true' ? (<>
 
-            <TouchableOpacity style={{margin: 5}} onPress={() => {initUser()}}>{/*</TouchableOpacity></SafeAreaView>, Alert.alert('Modal Closed'), console.log('Modal Closed')}}>*/}
+            <TouchableOpacity style={{margin: 5}} onPress={() => {initUser()}}>{/*</TouchableOpacity></SafeAreaView>, Alert.alert('Modal Closed'), console.log('Modal Closed')}}>*
                 <View style={{height: deviceHeightPart*1.5, margin: 2, borderWidth: 1, borderRadius: 5, backgroundColor: iconColor, textAlign: 'center', justifyContent: 'center', alignItems: 'center'}}>
                     <Text style={{fontSize: deviceHeightPart-10, margin: 0}}>Initialize User Data</Text>
                 </View>
             </TouchableOpacity>
 
-            <TouchableOpacity style={{margin: 5}} onPress={() => {onCollegesValueChange()}}>{/*</TouchableOpacity></SafeAreaView>, Alert.alert('Modal Closed'), console.log('Modal Closed')}}>*/}
+            <TouchableOpacity style={{margin: 5}} onPress={() => {onCollegesValueChange()}}>{/*</TouchableOpacity></SafeAreaView>, Alert.alert('Modal Closed'), console.log('Modal Closed')}}>*
                 <View style={{height: deviceHeightPart*1.5, margin: 2, borderWidth: 1, borderRadius: 5, backgroundColor: iconColor, textAlign: 'center', justifyContent: 'center', alignItems: 'center'}}>
                     <Text style={{fontSize: deviceHeightPart-10, margin: 0}}>Test Func</Text>
                 </View>
             </TouchableOpacity>
 
-        </>) : null}</View>
+        </>) : null}</View> */}
 
 
     </SafeAreaProvider>
