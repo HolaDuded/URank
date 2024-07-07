@@ -35,6 +35,9 @@ let iconBackgroundHeight = taskbarHeight*1.2;
 let iconColor = '#47e7a9';
 let colorOfText = '#fdfeff';
 
+let splashed = false;
+let vered = false;
+
 SplashScreen.preventAutoHideAsync();
 
 export default function App() {
@@ -43,35 +46,68 @@ export default function App() {
 
   useEffect(() => {
     async function prepare() {
-      try {
-        // await new Promise(resolve => setTimeout(resolve, 2));
-        let hasSplashed = 'false';
-        let hasNotVered = true;
-        try{
-          // hasSplashed = await AsyncStorage.getItem(splashed);
-        }catch(e){
-          hasSplashed = 'false';
-        }
-        if (hasNotVered){
-          console.log('VERSION 0.2.7');
-          hasNotVered = false
-        }
-        if (hasSplashed=='false'){
-          console.log()
-          console.log('hasSplashed - ');
-          console.log(hasSplashed);
-          console.log()
-          await new Promise(resolve => setTimeout(resolve, 200));
-          setAppIsReady(true);
-          // await AsyncStorage.setItem('splashed', 'true');
-          hasSplashed = 'true';
-        }
-      } catch (e) {
-        console.warn(e);
-      } finally {
-        // console.log('Finally Statement L65');
+      if (splashed == false){
+        await SplashScreen.preventAutoHideAsync();
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        await SplashScreen.hideAsync();
+        splashed = true;
+      }
+      if (vered == false){
+        console.log('VERSION 0.3.0');
+        console.log();
+        console.log('- Splash screen fully functional');
+        console.log('- Fixed college selection menu');
+        console.log();
+        vered = true;
       }
     }
+
+
+
+
+
+    //   try {
+    //     // await new Promise(resolve => setTimeout(resolve, 2));
+    //     try{
+    //       if (hasNotVered == true){
+    //         console.log('VERSION 0.2.7');
+    //         hasNotVered = false;
+    //       }
+    //       if (hasSplashed == 'true'){
+    //         let hasSplashed = 'true';
+    //         // let hasNotVered = true;
+    //       }}catch(e){
+    //         console.log('error caught - ')
+    //         console.log(e)
+    //           if (e == '[ReferenceError: Property \'hasNotVered\' doesn\'t exist]'){
+    //             console.log('ReferenceError')
+    //             let hasSplashed = 'false';
+    //             // let hasNotVered = true;
+    //           }else{
+
+    //           }
+    //     // if (hasNotVered){
+    //     //   console.log('VERSION 0.2.7');
+    //     //   hasNotVered = false
+    //     // }
+    //     if (hasSplashed=='false'){
+    //       console.log()
+    //       console.log('hasSplashed - ');
+    //       console.log(hasSplashed);
+    //       console.log()
+    //       console.log('Promised')
+    //       await new Promise(resolve => setTimeout(resolve, 200));
+    //       console.log('Promise resolved')
+    //       setAppIsReady(true);
+    //       // await AsyncStorage.setItem('splashed', 'true');
+    //       hasSplashed = 'true';
+    //     }}
+    //   } catch (e) {
+    //     console.warn(e);
+    //   } finally {
+    //     // console.log('Finally Statement L65');
+    //   }
+    // }
 
     prepare();
   }, []);
@@ -102,7 +138,10 @@ export default function App() {
 
   // const [valueT, setValueT] = useState([{label: 'Select a College', value: 'select', ratingKey: 'ratingKeyselect', key: uuid.v4()}])
   // const [valueT, setValueT] = useState(JSON.parse(AsyncStorage.getItem('valueT')))
-  const [valueT, setValueT] = useState(JSON.stringify([{label: 'Select a College', value: 'select', ratingKey: 'ratingKeyselect', key: uuid.v4()}]))
+
+  // const [valueT, setValueT] = useState(JSON.stringify([{label: 'Select a College', value: 'select', ratingKey: 'ratingKeyselect', key: uuid.v4()}]))
+  const [valueT, setValueT] = useState([{label: 'Select a College', value: 'select', ratingKey: 'ratingKeyselect', key: uuid.v4()}])
+
 //   const [semiOldVal, setSemiOldVal] = useState('select')
   const [oldVal, setOldVal] = useState('select')
 //   const [ratingsListMyCol, setRatingsListMyCol] = useState()
@@ -530,9 +569,12 @@ export default function App() {
   };
 
 
-  const roundNumber = (num) => Math.round(num/100) *100
+  // const roundNumber = (num) => Math.round(num/100) *100
 
   let onCollegesValueChange = async (valueIn) => {
+
+    // console.log('OCVC_valueIn - ')
+
     setValueMenu('home')
     
     let newArray = [valueM1, valueM2, valueM3, valueM4, valueM5, valueM6, valueM7, valueM8]
@@ -543,9 +585,9 @@ export default function App() {
     console.log()
     console.log()
     console.log(valueT)
-    let oldRVal = valueT[valueT.findIndex(e => e.value == oldVal)]
-    console.log(oldRVal)
-    let oldRKey = oldRVal.ratingKey
+    // let oldRVal = valueT[valueT.findIndex(e => e.value == oldVal)]
+    // console.log(oldRVal)
+    // let oldRKey = oldRVal.ratingKey
     let rVal = valueT[valueT.findIndex(e => e.value == value)]
     console.log(rVal)
     let rKey = rVal.ratingKey
@@ -567,6 +609,8 @@ export default function App() {
     console.log([valueM1, valueM2, valueM3, valueM4, valueM5, valueM6, valueM7, valueM8])
 
     addRating(rKey, newArray)
+
+
     // console.log()
     // console.log()
     // console.log()
@@ -895,7 +939,7 @@ export default function App() {
           </View>
         </View>
         <View style={styles.topTaskbar}>
-          {/*<DropDownPicker
+          <DropDownPicker
             open = {open}
             value = {value}
             items = {colleges}
@@ -918,7 +962,7 @@ export default function App() {
             modalAnimationType="slide"
 
           style={{ width: deviceWidth/2, height: taskbarHeight+10, position: 'absolute', left: 0, top: 0, margin: 5, marginTop: 0}}/>
-          */}
+          
         </View>
         <View style={{position: 'absolute', top: -deviceHeightPart*3, right: (2*deviceWidth/6)-7.5,}}>{valueMenu=='home' ? (<>
           <View style={{backgroundColor: iconColor, borderWidth: 1, position: 'absolute', top: deviceHeightPart*5.5, right: 0, marginTop: 5, borderRadius: 150, height: taskbarHeight+10, width: iconWidth+10}}></View>
