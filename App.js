@@ -53,10 +53,10 @@ export default function App() {
         splashed = true;
       }
       if (vered == false){
-        console.log('VERSION 0.3.0');
+        console.log('VERSION 0.3.1');
         console.log();
-        console.log('- Splash screen fully functional');
-        console.log('- Fixed college selection menu');
+        console.log('- Update packages');
+        console.log('- ');
         console.log();
         vered = true;
       }
