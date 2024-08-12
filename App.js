@@ -8,6 +8,7 @@ import Constants from 'expo-constants';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import uuid from 'react-native-uuid';
+import { BlurView } from 'expo-blur';
 
 import * as SplashScreen from 'expo-splash-screen';
 
@@ -38,6 +39,8 @@ let colorOfText = '#fdfeff';
 let splashed = false;
 let vered = false;
 
+let indexM = '';
+
 SplashScreen.preventAutoHideAsync();
 
 export default function App() {
@@ -64,62 +67,12 @@ export default function App() {
 
 
 
-
-
-    //   try {
-    //     // await new Promise(resolve => setTimeout(resolve, 2));
-    //     try{
-    //       if (hasNotVered == true){
-    //         console.log('VERSION 0.2.7');
-    //         hasNotVered = false;
-    //       }
-    //       if (hasSplashed == 'true'){
-    //         let hasSplashed = 'true';
-    //         // let hasNotVered = true;
-    //       }}catch(e){
-    //         console.log('error caught - ')
-    //         console.log(e)
-    //           if (e == '[ReferenceError: Property \'hasNotVered\' doesn\'t exist]'){
-    //             console.log('ReferenceError')
-    //             let hasSplashed = 'false';
-    //             // let hasNotVered = true;
-    //           }else{
-
-    //           }
-    //     // if (hasNotVered){
-    //     //   console.log('VERSION 0.2.7');
-    //     //   hasNotVered = false
-    //     // }
-    //     if (hasSplashed=='false'){
-    //       console.log()
-    //       console.log('hasSplashed - ');
-    //       console.log(hasSplashed);
-    //       console.log()
-    //       console.log('Promised')
-    //       await new Promise(resolve => setTimeout(resolve, 200));
-    //       console.log('Promise resolved')
-    //       setAppIsReady(true);
-    //       // await AsyncStorage.setItem('splashed', 'true');
-    //       hasSplashed = 'true';
-    //     }}
-    //   } catch (e) {
-    //     console.warn(e);
-    //   } finally {
-    //     // console.log('Finally Statement L65');
-    //   }
-    // }
-
     prepare();
   }, []);
 
   useEffect(() => {
     async function doFuncThing() {
       if (appIsReady) {
-        // This tells the splash screen to hide immediately! If we call this after
-        // `setAppIsReady`, then we may see a blank screen while the app is
-        // loading its initial state and rendering its first pixels. So instead,
-        // we hide the splash screen once we know the root view has already
-        // performed layout.
         await SplashScreen.hideAsync();
       }
     }
@@ -148,6 +101,8 @@ export default function App() {
   const [ratingsTotals, setRatingsTotals] = useState([])
 
   const [firstTime, setFirstTime] = useState('true')
+
+  const [deleteConfirmVis, setDeleteConfirmVis] = useState(false);
  
   useEffect(() => {
     async function initUser() {
@@ -174,12 +129,8 @@ export default function App() {
         }
       }
       let isFirstTime = await AsyncStorage.getItem('firstTime');
-      // await isFirstTime.JSON(firstUser(isFirstTime))
+      // console.log(isFirstTime)
       await (firstUser(isFirstTime))
-      // console.log('response - ');
-      // console.log(await AsyncStorage.getItem('firstTime')); // Removed to reduce log spam
-      // console.log('isFirstTime - ');
-      // console.log(isFirstTime);
     }
     initUser();
 
@@ -208,12 +159,6 @@ export default function App() {
       console.log(rKey)
       console.log('-----rKey-----')
       getRating(rKey)
-      // let jsonValue = await AsyncStorage.getItem(rKey);
-      // // console.log('URL_jsonvalue - ')
-      // // console.log(jsonValue)
-      // let parsedJSONValue = JSON.parse(jsonValue);
-      // console.log('RR_parsedJSONValue - ')
-      // console.log(parsedJSONValue)
     }
     console.log()
     console.log()
@@ -224,15 +169,6 @@ export default function App() {
   };
 
   let getRating = async (ratingKey) => {
-    // getRatings(ratingKey)
-    // let rVal = valueT[valueT.findIndex(e => e.value == value)]
-    // console.log(rVal)
-    // let rKey = rVal.ratingKey
-    // console.log()
-    // console.log()
-    // console.log()
-    // console.log()
-    // console.log()
     // console.log()
     let rKey = ratingKey
     console.log('-----rKey-----')
@@ -246,18 +182,7 @@ export default function App() {
     console.log('GR_parsedJSONValue - ')
     console.log(parsedJSONValue)
 
-    // // setValueM1(parsedJSONValue[0])
-    // // setValueM2(parsedJSONValue[1])
-    // // setValueM3(parsedJSONValue[2])
-    // // setValueM4(parsedJSONValue[3])
-    // // setValueM5(parsedJSONValue[4])
-    // // setValueM6(parsedJSONValue[5])
-    // // setValueM7(parsedJSONValue[6])
-    // // setValueM8(parsedJSONValue[7])
-    // // console.log('MANUAL OUTPUTING Ms')
-    // // console.log([valueM1, valueM2, valueM3, valueM4, valueM5, valueM6, valueM7, valueM8])
 
-    // updateWeights()
     let ratings = parsedJSONValue
     let total = 0
     // console.log('weights - ')
@@ -291,40 +216,24 @@ export default function App() {
     console.log('GR_ratingsTotals - ')
     console.log(ratingsTotals)
     console.log()
-    // return total
-    // console.log()
-    // console.log('total - ')
-    // console.log(total)
-    // console.log()
-    // console.log('weights - ')
-    // console.log(weights)
-    // console.log()
-    // console.log('ratings - ')
-    // console.log(ratings)
-    // console.log()
-    // console.log('weights[0] - ')
-    // console.log(weights[0])
 
   };
 
-  useEffect(() => {
-    // console.log()
-    // console.log('UE_3_ratingsTotals - ')
-    // console.log(ratingsTotals) // Removed to reduce log spam
-    // console.log()
-
-    if (colleges.length==0){
-        setColleges({label: 'Select a College', value: 'select', ratingKey: 'ratingKeyselect', key: uuid.v4()})
-    }
-    else{
-        // console.log()
-        // console.log('UE_3_colleges - ')
-        // console.log(colleges)
-        // console.log()
-    }
-
-
-  }, [ratingsTotals])
+  // useEffect(() => {
+  //   // console.log()
+  //   // console.log('UE_3_ratingsTotals - ')
+  //   // console.log(ratingsTotals) // Removed to reduce log spam
+  //   // console.log()
+  //   if (colleges.length==0){
+  //       setColleges({label: 'Select a College', value: 'select', ratingKey: 'ratingKeyselect', key: uuid.v4()})
+  //   }
+  //   else{
+  //       // console.log()
+  //       // console.log('UE_3_colleges - ')
+  //       // console.log(colleges)
+  //       // console.log()
+  //   }
+  // }, [ratingsTotals])
 
   const updateRatingsL = async (key) => {
     try {
@@ -399,13 +308,7 @@ export default function App() {
       const jsonValue = await AsyncStorage.getItem('collegeList');
       const pasredJSONValue = JSON.parse(jsonValue);
       if (pasredJSONValue!=null){
-        // console.log('UpdateColleges_pasredJSONValue - ')
-        // console.log(pasredJSONValue)
-        // console.log('UpdateColleges_value - ')
-        // console.log(value)
         setValueT(pasredJSONValue)
-        
-          // return value
         
       }
     } catch (e) {
@@ -413,47 +316,13 @@ export default function App() {
       console.log(e)
     }
   };
-
-//   const getDataJSON = async (key) => {
-//     try {
-//       const jsonValue = await AsyncStorage.getItem(key);
-//       const value = JSON.parse(jsonValue);
-//       if (value!=null){
-//         return value
-//       }
-//     } catch (e) {
-//       console.log(e)
-//     }
-//   };
   
 
-
-  useEffect(() => { //removed log spamming
-    // console.log('-----useEffect-----')
-    setViewedWeights()
-    updateColleges()
-    // setColleges(valueT)
-    // setColleges(valueT)
-    // console.log('-----useEffect-----')
-  }, [valueT]);
-  
-//   useEffect(() => {
-//     // console.log(),
-//     // console.log('UC_pasredJSONValue - '),
-//     // console.log(pasredJSONValue),
-//     // console.log(),
-//     // console.log('UE_2_valueT - '),
-//     // console.log(valueT),
-//     setColleges(valueT)
-    
-//   }, [valueT])
 
   useEffect(() => {
-    // console.log()
-    // console.log('UE_2_colleges - ')
-    // console.log(colleges)
-    // console.log()
-  }, [colleges])
+    setViewedWeights()
+    updateColleges()
+  }, [valueT]);
 
   const [factors, setFactors] = useState(initFactors)
   const [colleges, setColleges] = useState(valueT)
@@ -502,32 +371,13 @@ export default function App() {
 
   
 
-  // let updateWeights = () => {
-  //   setWeights([
-  //     {weight: valueS1, key: uuid.v4()},
-  //     {weight: valueS2, key: uuid.v4()},
-  //     {weight: valueS3, key: uuid.v4()},
-  //     {weight: valueS4, key: uuid.v4()},
-  //     {weight: valueS5, key: uuid.v4()},
-  //     {weight: valueS6, key: uuid.v4()},
-  //     {weight: valueS7, key: uuid.v4()},
-  //     {weight: valueS8, key: uuid.v4()},
-  //   ])
-  //   storeDataJSON('weights', weights)
-  // };
+
 
   let setNewWeights = async () => {
     let arrNew = [valueS1, valueS2, valueS3, valueS4, valueS5, valueS6, valueS7, valueS8]
-    // console.log()
-    // console.log('arrNew - ')
-    // console.log(arrNew)
-    // console.log('arrNew should be - ')
-    // console.log([valueS1, valueS2, valueS3, valueS4, valueS5, valueS6, valueS7, valueS8])
-    // console.log()
     try {
       const jsonValue = JSON.stringify(arrNew)
       await AsyncStorage.setItem('weights', jsonValue).then(Alert.alert('Settings Successfully Saved'))
-      // storeDataJSON('weights', weights)
     } catch (e) {
       console.log(e)
     }
@@ -535,7 +385,6 @@ export default function App() {
 
   let setViewedWeights = () => {
     updateWeights().then(() => {
-      // console.log(weights)
       setValueS1(weights[0])
       setValueS2(weights[1])
       setValueS3(weights[2])
@@ -610,149 +459,9 @@ export default function App() {
 
     addRating(rKey, newArray)
 
-
-    // console.log()
-    // console.log()
-    // console.log()
-    // console.log('oldRKey - ')
-    // console.log(oldRKey)
-    // console.log()
-    // console.log()
-    // console.log()
-    // console.log()
-    // let url_returned = updateRatingsL(rKey)
-    // console.log()
-    // console.log()
-    // console.log()
-    // console.log()
-    // console.log()
-    // console.log('OCVC_url_returned - ')
-    // console.log(url_returned)
-    // console.log()
-    // console.log()
-    // console.log()
-    // console.log()
-    // console.log()
-    // addRating(oldRKey, newArray).then(
-      // console.log(),
-      // console.log('rKey - '),
-      // console.log(rKey),
-      // updateRatingsL(rKey).then(
-        // console.log('OCVC_URL_ratingsL - '),
-        // console.log(ratingsL),
-        // setValueM1(ratingsL[0]),
-        // setValueM2(ratingsL[1]),
-        // setValueM3(ratingsL[2]),
-        // setValueM4(ratingsL[3]),
-        // setValueM5(ratingsL[4]),
-        // setValueM6(ratingsL[5]),
-        // setValueM7(ratingsL[6]),
-        // setValueM8(ratingsL[7]),
-        // console.log('it is done.'),
-        
-        // console.log('\n'),
-        // console.log('it is done more betterer.'),
-    //   )
-    // )
-    // delay(5000).then(
-    //   // console.log('OCVC_D_ratingsL - '),
-    //   // console.log(ratingsL),
-    //   setValueM1(ratingsL[0]),
-    //   setValueM2(ratingsL[1]),
-    //   setValueM3(ratingsL[2]),
-    //   setValueM4(ratingsL[3]),
-    //   setValueM5(ratingsL[4]),
-    //   setValueM6(ratingsL[5]),
-    //   setValueM7(ratingsL[6]),
-    //   setValueM8(ratingsL[7]),
-    // )
-    // console.log()
-    // // updateRatingsL(rKey)
-    // console.log('ratingsL - ')
-    // console.log(ratingsL)
-
-
-    // if(value!=oldVal){ //may need 3rd variable
-    //   setSemiOldVal(oldVal)
-    //   setOldVal(value)
-    //   if (oldVal==value){
-    //     setOldVal(semiOldVal)
-    //     console.log()
-    //     console.log()
-    //     console.log()
-    //     console.log('why not?????????')
-    //     console.log()
-    //     console.log()
-        
-    //   }
-    //   // if (semiOldVal!=value){
-    //   //   setOldVal(semiOldVal)
-    //   // }
-    //   // if (value)
-    //   console.log()
-    //   console.log()
-    //   console.log()
-    //   console.log('why?????????')
-    //   console.log()
-    //   console.log()
-    //   console.log()
-    // }
-
-    // console.log('OV==V_value - ')
-    // console.log(value)
-    // console.log()
-    // console.log('OV==V_oldVal - ')
-    // console.log(oldVal)
-    // console.log()
-    // console.log('OV==V_semiOldVal - ')
-    // console.log(semiOldVal)
-    // console.log()
-    // console.log(oldVal==value)
-    // console.log()
-
-    // if (oldVal==value){
-    //   setOldVal(semiOldVal)
-    //   console.log()
-    //   console.log()
-    //   console.log()
-    //   console.log('why not?????????')
-    //   console.log()
-    //   console.log(oldVal==value)
-    //   console.log()
-    //   console.log()
-    //   console.log()
-    //   console.log()
-      
-    // }
-    // console.log()
-    // console.log('value - ')
-    // console.log(value)
-    // console.log()
-    // console.log('oldVal - ')
-    // console.log(oldVal)
-    // console.log()
-    // console.log('semiOldVal - ')
-    // console.log(semiOldVal)
-    // console.log()
-    // console.log()
-    // console.log()
   }
 
-//  let onCollegesValueChange = (value) => {
-//   setValueMenu('home')
-//   let newArray = [valueM1, valueM2, valueM3, valueM4, valueM5, valueM6, valueM7, valueM8]
-//   console.log('newArray - ')
-//   console.log(newArray)
-//   let rKey = valueT[valueT.findIndex(e => e.value == value)].ratingKey
-//   console.log()
-//   console.log('rKey - ')
-//   console.log(rKey)
-//   addRating(rKey, newArray).then(updateRatingsL(rKey))
-//   console.log()
-//   // updateRatingsL(rKey)
-//   console.log('ratingsL - ')
-//   console.log(ratingsL)
-// }
+
 
 
   setOpenMenuToggle = () => {
@@ -894,37 +603,6 @@ export default function App() {
   // ]; //REUSE DROPDOWNS, JUST SAVE IT AND READ IT WHEN DISPLAYING
 
 
-  // const sortedRatings = [].concat(ratings)
-  //   .sort((a, b) => a.rating > b.rating ? 1 : -1)
-  //   .map((item, i) => 
-  //       <div key={i}> {item.rating}</div>
-  //   );
-
-  // const [showSplash, setShowSplash] = useState(true);
-  //    useEffect(() => {
-  //     AsyncStorage.getItem('alreadyLaunched').then(value => {
-  //         if(value == null){
-  //            setTimeout(() => {
-  //         setShowSplash(false)
-  //       },5000)
-  //           AsyncStorage.setItem('alreadyLaunched','true');
-  //           setIsFirstLaunch(true);
-  //         }else{
-  //           setIsFirstLaunch(false);
-  //         }
-  //     })
-  //  },[]);
-    
-  
-
-  // if (showSplash){
-  //   return (
-  //     <SplashScreen/>
-  //   )
-  // }
-
-
-  
 
 
 
@@ -1127,7 +805,7 @@ export default function App() {
                       renderItem={({ item, index }) => 
                         <View style={{backgroundColor: sectionBackgroundColor, alignItems: 'center', justifyContent: 'space-between', height: deviceHeightPart*1.5, flexDirection: 'row', marginBottom: 5, width: deviceWidth-10, marginLeft: 5, borderWidth: 1, borderRadius: 15}}>
                           <Text style={{fontSize: 24, marginLeft: 3.5, color: colorOfText, shadowOpacity: 0.5}}>{item.label}</Text>
-                          <TouchableOpacity onPress={() => {removeValueCollage(index)}}>
+                          <TouchableOpacity onPress={() => {setDeleteConfirmVis(true); let indexM = index}}>
                             <View style={{backgroundColor: 'red', textAlign: 'center', marginRight: 5, alignItems: 'center', justifyContent: 'center', height: deviceHeightPart, width: deviceHeightPart, borderWidth: 1, borderRadius: 25}}>
                               <Text>-</Text>
                             </View>
@@ -1135,6 +813,30 @@ export default function App() {
                         </View>
                       }
                     />
+
+                    <Modal
+                    transparent={true}
+                    visible={deleteConfirmVis}
+                    // animationType='slide'
+                    style={{}}>
+                      <BlurView>
+                        <SafeAreaView>
+                          <View style = {{backgroundColor: 'white', borderRadius: 15, width: '80%', left: '10%', height: 200, top: (deviceHeight - 200)/2, justifyContent: 'center', alignContent: 'center'}}>
+                            <Text style = {{position: 'absolute', top: '5%', textAlign: 'center', padding: 15}}>By deleting this college any notes and ratings will be permanantly deleted.  Any photos linked will not be deleted.  If you recreate this college any photos previously linked to the college will not be linked.</Text>
+                            <TouchableOpacity onPress={() => {setDeleteConfirmVis(false)}}
+                              style = {{position: 'absolute', backgroundColor: iconColor, borderWidth: 0, borderColor: 'black', borderRadius: 5, bottom: '10%', left: '15%'}}
+                              >
+                              <Text style = {{padding: 5}}>Cancel</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={() => {removeValueCollage(indexM); setDeleteConfirmVis(false)}}
+                              style = {{backgroundColor: 'red', borderWidth: 0, borderColor: 'black', borderRadius: 5, position: 'absolute', bottom: '10%', right: '15%'}}
+                              >
+                              <Text style = {{padding: 5}}>Confirm and Remove</Text>
+                            </TouchableOpacity>
+                          </View>
+                        </SafeAreaView>
+                      </BlurView>
+                    </Modal>
 
 
                     <View style={{width: deviceWidth, height: deviceHeightPart*22.5}}></View>

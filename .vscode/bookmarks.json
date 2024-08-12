@@ -4,14 +4,39 @@
 			"path": "App.js",
 			"bookmarks": [
 				{
-					"line": 960,
-					"column": 38,
-					"label": ""
+					"line": 41,
+					"column": 0,
+					"label": "Variables"
 				},
 				{
-					"line": 71,
+					"line": 67,
 					"column": 1,
-					"label": ""
+					"label": "INLOG Changelog"
+				},
+				{
+					"line": 96,
+					"column": 0,
+					"label": "const variables"
+				},
+				{
+					"line": 462,
+					"column": 0,
+					"label": "deleteConfirmVisFunc"
+				},
+				{
+					"line": 638,
+					"column": 38,
+					"label": "College Selector"
+				},
+				{
+					"line": 755,
+					"column": 0,
+					"label": "Dev Menu"
+				},
+				{
+					"line": 786,
+					"column": 20,
+					"label": "Delete Menu"
 				}
 			]
 		}
