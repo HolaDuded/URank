@@ -56,10 +56,10 @@ export default function App() {
         splashed = true;
       }
       if (vered == false){
-        console.log('VERSION 0.3.1');
+        console.log('VERSION 0.3.2');
         console.log();
         console.log('- Update packages');
-        console.log('- ');
+        console.log('- Added deletion warning modal');
         console.log();
         vered = true;
       }
