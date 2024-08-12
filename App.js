@@ -822,7 +822,7 @@ export default function App() {
                       <BlurView>
                         <SafeAreaView>
                           <View style = {{backgroundColor: 'white', borderRadius: 15, width: '80%', left: '10%', height: 200, top: (deviceHeight - 200)/2, justifyContent: 'center', alignContent: 'center'}}>
-                            <Text style = {{position: 'absolute', top: '5%', textAlign: 'center', padding: 15}}>By deleting this college any notes and ratings will be permanantly deleted.  Any photos linked will not be deleted.  If you recreate this college any photos previously linked to the college will not be linked.</Text>
+                            <Text style = {{position: 'absolute', top: '5%', textAlign: 'center', padding: 15}}>By deleting this college any notes and ratings will be permanently deleted.  Any photos linked will not be deleted.  If you recreate this college any photos previously linked to the college will not be linked.</Text>
                             <TouchableOpacity onPress={() => {setDeleteConfirmVis(false)}}
                               style = {{position: 'absolute', backgroundColor: iconColor, borderWidth: 0, borderColor: 'black', borderRadius: 5, bottom: '10%', left: '15%'}}
                               >
