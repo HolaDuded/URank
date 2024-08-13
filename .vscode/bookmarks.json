@@ -19,24 +19,39 @@
 					"label": "const variables"
 				},
 				{
-					"line": 462,
+					"line": 273,
+					"column": 0,
+					"label": "Functions"
+				},
+				{
+					"line": 485,
 					"column": 0,
 					"label": "deleteConfirmVisFunc"
 				},
 				{
-					"line": 638,
+					"line": 661,
 					"column": 38,
 					"label": "College Selector"
 				},
 				{
-					"line": 755,
+					"line": 778,
 					"column": 0,
 					"label": "Dev Menu"
 				},
 				{
-					"line": 786,
+					"line": 809,
 					"column": 20,
 					"label": "Delete Menu"
+				},
+				{
+					"line": 870,
+					"column": 14,
+					"label": "Ratings on Settings"
+				},
+				{
+					"line": 1113,
+					"column": 0,
+					"label": "College Rating"
 				}
 			]
 		}

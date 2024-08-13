@@ -56,10 +56,10 @@ export default function App() {
         splashed = true;
       }
       if (vered == false){
-        console.log('VERSION 0.3.2');
+        console.log('VERSION 0.3.3');
         console.log();
-        console.log('- Update packages');
-        console.log('- Added deletion warning modal');
+        console.log('- Fix 2 ratings bug');
+        console.log('- ');
         console.log();
         vered = true;
       }
@@ -272,6 +272,18 @@ export default function App() {
     }
   };
 
+  const recreateFactors = (name, index) => {
+    let placeholderFactors = factors;
+    placeholderFactors[index].name = name;
+    setFactors(placeholderFactors);
+  };
+
+  const recreateFactorNames = (name, index) => {
+    let placeholderFactorNames = factorNames;
+    placeholderFactorNames[index] = name;
+    setFactorNames(placeholderFactorNames);
+  };
+
   let initColleges = [
     {label: 'Select a College', value: 'select', ratingKey: 'ratingKeyselect', key: uuid.v4()},
     {label: 'UW - Madison', value: 'madison', ratingKey: 'ratingKeymadison', key: uuid.v4()},
@@ -320,13 +332,14 @@ export default function App() {
 
 
   useEffect(() => {
-    setViewedWeights()
+    // setViewedWeights()
     updateColleges()
   }, [valueT]);
 
   const [factors, setFactors] = useState(initFactors)
   const [colleges, setColleges] = useState(valueT)
   const [deleteMenuVis, setDeleteMenuVis] = useState(false)
+  const [factorNames, setFactorNames] = useState(factors.names)
 
   let removeValueCollage = (index) => {
     let newArr = valueT
@@ -378,6 +391,16 @@ export default function App() {
     try {
       const jsonValue = JSON.stringify(arrNew)
       await AsyncStorage.setItem('weights', jsonValue).then(Alert.alert('Settings Successfully Saved'))
+    } catch (e) {
+      console.log(e)
+    }
+  };
+
+  let setNewRatings = async () => {
+    let arrRNew = [valueM1, valueM2, valueM3, valueM4, valueM5, valueM6, valueM7, valueM8]
+    try {
+      const rjsonValue = JSON.stringify(arrRNew)
+      await AsyncStorage.setItem('ratingKey' + text, rjsonValue).then(Alert.alert('Ratings Successfully Saved'))
     } catch (e) {
       console.log(e)
     }
@@ -446,18 +469,18 @@ export default function App() {
     console.log(jsonValue)
     let parsedJSONValue = JSON.parse(jsonValue);
 
-    setValueM1(parsedJSONValue[0])
-    setValueM2(parsedJSONValue[1])
-    setValueM3(parsedJSONValue[2])
-    setValueM4(parsedJSONValue[3])
-    setValueM5(parsedJSONValue[4])
-    setValueM6(parsedJSONValue[5])
-    setValueM7(parsedJSONValue[6])
-    setValueM8(parsedJSONValue[7])
-    console.log('MANUAL OUTPUTING Ms')
-    console.log([valueM1, valueM2, valueM3, valueM4, valueM5, valueM6, valueM7, valueM8])
+    // setValueM1(parsedJSONValue[0])
+    // setValueM2(parsedJSONValue[1])
+    // setValueM3(parsedJSONValue[2])
+    // setValueM4(parsedJSONValue[3])
+    // setValueM5(parsedJSONValue[4])
+    // setValueM6(parsedJSONValue[5])
+    // setValueM7(parsedJSONValue[6])
+    // setValueM8(parsedJSONValue[7])
+    // console.log('MANUAL OUTPUTING Ms')
+    // console.log([valueM1, valueM2, valueM3, valueM4, valueM5, valueM6, valueM7, valueM8])
 
-    addRating(rKey, newArray)
+    // addRating(rKey, newArray)
 
   }
 
@@ -715,7 +738,7 @@ export default function App() {
               console.log('------BEFORE------')
               console.log('colleges.length - ')
               console.log(colleges.length)
-              for (let i = 1; i < colleges.length; i = i + 1){
+              for (let i = 0; i < colleges.length; i = i + 1){
                 console.log()
                 console.log('colleges[i].ratingKey - ')
                 console.log(colleges[i].ratingKey)
@@ -818,6 +841,7 @@ export default function App() {
                     transparent={true}
                     visible={deleteConfirmVis}
                     // animationType='slide'
+                    animationType='fade'
                     style={{}}>
                       <BlurView>
                         <SafeAreaView>
@@ -848,6 +872,18 @@ export default function App() {
 
                 <View style={{height: deviceHeightPart*2, backgroundColor: sectionBackgroundColor, border: 'gray', marginTop: 5, justifyContent: 'right', marginLeft: 5, flexDirection: 'row', alignItems: 'center', marginBottom: 5, borderWidth: 1, borderRadius: 10, width: deviceWidth-10, }}>
                 <View style={{width:(7.3*(deviceWidth))/10}}><Text style={styles.factors}>{factors[0].name}</Text></View>
+                {/* <View style={{width:(7.3*(deviceWidth))/10}}><TextInput
+                    style={styles.factors}
+                    keyboardAppearance='dark'
+                    autoCorrect = {false}
+                    autoCapitalize = 'words'
+                    onChangeText={recreateFactors(factors[0].name, '0')}
+                    // value={factors[0].name}
+                    placeholder={factors[0].name}
+                    // onChangeText={recreateFactorNames(factorNames[0], '0')}
+                    // // value={factors[0].name}
+                    // placeholder={factorNames[0]}
+                  /></View> */}
                   
                   <View style={styles.topTaskbar}>
                     <DropDownPicker
@@ -1276,6 +1312,7 @@ export default function App() {
                     </View>
                   </View>
                   {/* <TouchableHighlight onPress={() => setFactors(initFactors)}><Text>RESET FACTORS</Text></TouchableHighlight> */}
+                  <TouchableOpacity onPress={() => {setNewRatings()}}><View style={{backgroundColor: littleSection, height: deviceHeightPart, width: deviceWidth/3, marginLeft: deviceWidth/3, justifyContent: 'center', alignText: 'center', alignItems: 'center', borderWidth: 1, borderRadius: 15}}><Text style={{color: colorOfText, shadowOpacity: 0.5}}>Save</Text></View></TouchableOpacity>
                   <View style={{zIndex: -100000, height: deviceHeightPart*25, justifyContent: 'flex-end',}}></View>
                   </ScrollView>
                   </View>
