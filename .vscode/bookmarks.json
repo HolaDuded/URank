@@ -19,37 +19,47 @@
 					"label": "const variables"
 				},
 				{
-					"line": 273,
+					"line": 171,
+					"column": 0,
+					"label": "getRating func"
+				},
+				{
+					"line": 285,
 					"column": 0,
 					"label": "Functions"
 				},
 				{
-					"line": 485,
+					"line": 503,
 					"column": 0,
 					"label": "deleteConfirmVisFunc"
 				},
 				{
-					"line": 661,
+					"line": 679,
 					"column": 38,
 					"label": "College Selector"
 				},
 				{
-					"line": 778,
+					"line": 796,
 					"column": 0,
 					"label": "Dev Menu"
 				},
 				{
-					"line": 809,
+					"line": 827,
 					"column": 20,
 					"label": "Delete Menu"
 				},
 				{
-					"line": 870,
+					"line": 888,
 					"column": 14,
 					"label": "Ratings on Settings"
 				},
 				{
-					"line": 1113,
+					"line": 1101,
+					"column": 0,
+					"label": "College Ranking Page"
+				},
+				{
+					"line": 1135,
 					"column": 0,
 					"label": "College Rating"
 				}

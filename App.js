@@ -56,10 +56,10 @@ export default function App() {
         splashed = true;
       }
       if (vered == false){
-        console.log('VERSION 0.3.3');
+        console.log('VERSION 0.3.4');
         console.log();
-        console.log('- Fix 2 ratings bug');
-        console.log('- ');
+        console.log('- Fixed saving bugs');
+        console.log('- Added general notes');
         console.log();
         vered = true;
       }
@@ -103,6 +103,8 @@ export default function App() {
   const [firstTime, setFirstTime] = useState('true')
 
   const [deleteConfirmVis, setDeleteConfirmVis] = useState(false);
+
+  const [genNotes, setGenNotes] = useState('');
  
   useEffect(() => {
     async function initUser() {
@@ -150,23 +152,23 @@ export default function App() {
     updateRatingsL(ratingKey)
   };
 
-  let reloadRatings = async () => {
-    setRatingsTotals([])
-    for (let i = 1; i < valueT.length; i = i + 1){
-      let rKey = valueT[i].ratingKey
-      console.log('-----rKey-----')
-      console.log('rKey - ')
-      console.log(rKey)
-      console.log('-----rKey-----')
-      getRating(rKey)
-    }
-    console.log()
-    console.log()
-    console.log('RR_ratingsTotals - ')
-    console.log(ratingsTotals)
-    console.log()
-    console.log()
-  };
+  // let reloadRatings = async () => {
+  //   setRatingsTotals([])
+  //   for (let i = 1; i < valueT.length; i = i + 1){
+  //     let rKey = valueT[i].ratingKey
+  //     console.log('-----rKey-----')
+  //     console.log('rKey - ')
+  //     console.log(rKey)
+  //     console.log('-----rKey-----')
+  //     getRating(rKey)
+  //   }
+  //   console.log()
+  //   console.log()
+  //   console.log('RR_ratingsTotals - ')
+  //   console.log(ratingsTotals)
+  //   console.log()
+  //   console.log()
+  // };
 
   let getRating = async (ratingKey) => {
     // console.log()
@@ -212,10 +214,20 @@ export default function App() {
     // console.log()
     // console.log('GR_total - ')
     // console.log(GR_total)
+
+    let slicedRatingsTotals = ratingsTotals.slice(-valueT.length + 1, ratingsTotals.length)
+
+    console.log()
+    console.log('slicedRatingsTotals - ')
+    console.log(slicedRatingsTotals)
+    console.log()
+
     console.log()
     console.log('GR_ratingsTotals - ')
     console.log(ratingsTotals)
     console.log()
+
+    setRatingsTotals(slicedRatingsTotals)
 
   };
 
@@ -352,8 +364,7 @@ export default function App() {
     const newList = valueT.concat({label: nameI, value: valueI, ratingKey: 'ratingKey'+valueI, key: uuid.v4()})
     addRating('ratingKey' + valueI, [0, 0, 0, 0, 0, 0, 0, 0])
     setValueT(newList)
-    storeDataJSON('collegeList', newList)
-    updateColleges('collegeList')
+    storeDataJSON('collegeList', newList).then(updateColleges('collegeList'))
   };
 
   let formatCollegeName = (name) => {
@@ -400,7 +411,9 @@ export default function App() {
     let arrRNew = [valueM1, valueM2, valueM3, valueM4, valueM5, valueM6, valueM7, valueM8]
     try {
       const rjsonValue = JSON.stringify(arrRNew)
-      await AsyncStorage.setItem('ratingKey' + text, rjsonValue).then(Alert.alert('Ratings Successfully Saved'))
+      console.log(value)
+      await AsyncStorage.setItem('ratingKey' + value, rjsonValue)
+      await AsyncStorage.setItem('genNotes' + value, genNotes).then(Alert.alert('Ratings Successfully Saved'))
     } catch (e) {
       console.log(e)
     }
@@ -469,16 +482,21 @@ export default function App() {
     console.log(jsonValue)
     let parsedJSONValue = JSON.parse(jsonValue);
 
-    // setValueM1(parsedJSONValue[0])
-    // setValueM2(parsedJSONValue[1])
-    // setValueM3(parsedJSONValue[2])
-    // setValueM4(parsedJSONValue[3])
-    // setValueM5(parsedJSONValue[4])
-    // setValueM6(parsedJSONValue[5])
-    // setValueM7(parsedJSONValue[6])
-    // setValueM8(parsedJSONValue[7])
-    // console.log('MANUAL OUTPUTING Ms')
-    // console.log([valueM1, valueM2, valueM3, valueM4, valueM5, valueM6, valueM7, valueM8])
+    setValueM1(parsedJSONValue[0])
+    setValueM2(parsedJSONValue[1])
+    setValueM3(parsedJSONValue[2])
+    setValueM4(parsedJSONValue[3])
+    setValueM5(parsedJSONValue[4])
+    setValueM6(parsedJSONValue[5])
+    setValueM7(parsedJSONValue[6])
+    setValueM8(parsedJSONValue[7])
+    console.log('MANUAL OUTPUTING Ms')
+    console.log([valueM1, valueM2, valueM3, valueM4, valueM5, valueM6, valueM7, valueM8])
+
+    console.log(rVal)
+    console.log(rVal.value)
+    let holdingNotes = await AsyncStorage.getItem('genNotes' + rVal.value)
+    setGenNotes(holdingNotes)
 
     // addRating(rKey, newArray)
 
@@ -679,7 +697,7 @@ export default function App() {
 
                 <View style={{alignItems: 'flex-end', width: deviceWidth}}>
                   <TouchableOpacity style={{margin: 5}} onPress={() => {setModalVisible(!modalVisible)}}>{/*</TouchableOpacity></SafeAreaView>, Alert.alert('Modal Closed'), console.log('Modal Closed')}}>*/}
-                    <View style={{height: deviceHeightPart, width: deviceHeightPart, margin: 2, borderWidth: 1, borderRadius: 5, backgroundColor: iconColor, textAlign: 'center', justifyContent: 'center', alignItems: 'center'}}>
+                    <View style={{height: deviceHeightPart, width: deviceHeightPart, margin: 2, borderWidth: 1, borderRadius: 5, backgroundColor: 'red', textAlign: 'center', justifyContent: 'center', alignItems: 'center'}}>
                       <Text style={{fontSize: deviceHeightPart-10, margin: 0}}>X</Text>
                     </View>
                   </TouchableOpacity>
@@ -736,14 +754,14 @@ export default function App() {
             onChangeValue = {(value) => {
               // setViewedWeights()
               console.log('------BEFORE------')
-              console.log('colleges.length - ')
-              console.log(colleges.length)
-              for (let i = 0; i < colleges.length; i = i + 1){
+              console.log('valueT.length - ')
+              console.log(valueT.length)
+              for (let i = 1; i < valueT.length; i = i + 1){
                 console.log()
-                console.log('colleges[i].ratingKey - ')
-                console.log(colleges[i].ratingKey)
+                console.log('valueT['+{i}+'].ratingKey - ')
+                console.log(valueT[i].ratingKey)
                 console.log()
-                getRating(colleges[i].ratingKey)
+                getRating(valueT[i].ratingKey)
                 console.log('ratingsTotals - ')
                 // console.log(ratingsTotals) //attempt fix remove
               }
@@ -783,7 +801,7 @@ export default function App() {
               <TouchableOpacity style={styles.devMenuItem} onPress={() => {updateWeights(), console.log(weights)}}><Text style={styles.devMenuItemText}>LOG WEIGHTS</Text></TouchableOpacity>
               <TouchableOpacity onPress={() => {setViewedWeights().then(Alert.alert('Viewed Weights Set'))}} style={styles.devMenuItem}><Text style={styles.devMenuItemText}>setViewedWeights</Text></TouchableOpacity>
               <TouchableOpacity onPress={() => {storeDataJSON('collegeList', initColleges), updateColleges('collegeList'), Alert.alert('All personalized colleges cleared')}} style={styles.devMenuItem}><Text style={styles.devMenuItemText}>resetColleges</Text></TouchableOpacity>
-              <TouchableOpacity onPress={() => {console.log(ratingsTotals)}} style={styles.devMenuItem}><Text style={styles.devMenuItemText}>logList</Text></TouchableOpacity>
+              <TouchableOpacity onPress={() => {console.log(ratingsTotals)}} style={styles.devMenuItem}><Text style={styles.devMenuItemText}>logRankingsTotalsList</Text></TouchableOpacity>
               <TouchableOpacity onPress={async () => {await AsyncStorage.setItem('firstTime', 'true')}} style={styles.devMenuItem}><Text style={styles.devMenuItemText}>resetFirstTime</Text></TouchableOpacity>
               <TouchableOpacity onPress={async () => {await AsyncStorage.clear()}} style={styles.devMenuItem}><Text style={styles.devMenuItemText}>clearAsyncStorage</Text></TouchableOpacity>
             
@@ -840,10 +858,10 @@ export default function App() {
                     <Modal
                     transparent={true}
                     visible={deleteConfirmVis}
-                    // animationType='slide'
-                    animationType='fade'
+                    animationType='slide'
+                    // animationType='fade'
                     style={{}}>
-                      <BlurView>
+                      {/* <BlurView> */}
                         <SafeAreaView>
                           <View style = {{backgroundColor: 'white', borderRadius: 15, width: '80%', left: '10%', height: 200, top: (deviceHeight - 200)/2, justifyContent: 'center', alignContent: 'center'}}>
                             <Text style = {{position: 'absolute', top: '5%', textAlign: 'center', padding: 15}}>By deleting this college any notes and ratings will be permanently deleted.  Any photos linked will not be deleted.  If you recreate this college any photos previously linked to the college will not be linked.</Text>
@@ -859,7 +877,7 @@ export default function App() {
                             </TouchableOpacity>
                           </View>
                         </SafeAreaView>
-                      </BlurView>
+                      {/* </BlurView> */}
                     </Modal>
 
 
@@ -1093,7 +1111,11 @@ export default function App() {
                 renderItem={({ item, index }) => 
                   <View style={{backgroundColor: sectionBackgroundColor, marginBottom: 5, width: deviceWidth-10, marginLeft: 5, borderWidth: 1, borderRadius: 5}}>
                     <Text style={{fontSize: 24, marginLeft: 3.5, color: colorOfText, shadowOpacity: 0.5}}>{item.label}</Text>
-                    <View style={{alignItems: 'flex-end', marginTop: -26, marginRight: 5}}><Text style={{fontSize: 24, marginLeft: 3.5, color: colorOfText, shadowOpacity: 0.5}}>{Math.round(ratingsTotals[index]*100)/100}</Text></View>
+                    <View style={{alignItems: 'flex-end', marginTop: -26, marginRight: 5}}>
+                      <Text style={{fontSize: 24, marginLeft: 3.5, color: colorOfText, shadowOpacity: 0.5}}>
+                        {Math.round(ratingsTotals[index]*100)/100}
+                      </Text>
+                    </View>
                     {/* <Text style={{fontSize: 24, marginLeft: 3.5, color: colorOfText, shadowOpacity: 0.5}}>{ratingsTotals[index]}</Text> */}
                     {/* <View style={{alignItems: 'flex-end', justifyContent: 'flex-start', marginTop: -24}}>
                       {/* <TouchableOpacity onPress={() => {getRatings(item.ratingKey)}}><Text>LOG RATING</Text></TouchableOpacity> 
@@ -1311,8 +1333,30 @@ export default function App() {
                         style={{ width: deviceWidth/5, height: taskbarHeight/2, left: 0, top: 4, margin: 5}}/>
                     </View>
                   </View>
+                  <View style={{zIndex: -100000, width: '100%', justifyContent: 'center', alignItems: 'center',}}>
+                  <TextInput
+                    style={{
+                      borderWidth: 1,
+                      borderRadius: 10,
+                      // height: '20%',
+                      height: 200,
+                      width: deviceWidth - 10,
+                      padding: 5,
+                      // bottom: '2%',
+                      textAlign: 'top',
+                      justifyContent: 'top',
+                      alignItems: 'left',
+                      color: 'black',
+                      backgroundColor: 'white',
+                    }}
+                    keyboardAppearance='dark'
+                    autoCorrect = {true}
+                    autoCapitalize = 'sentences'
+                    onChangeText={setGenNotes}
+                    value={genNotes}
+                  /></View>      
                   {/* <TouchableHighlight onPress={() => setFactors(initFactors)}><Text>RESET FACTORS</Text></TouchableHighlight> */}
-                  <TouchableOpacity onPress={() => {setNewRatings()}}><View style={{backgroundColor: littleSection, height: deviceHeightPart, width: deviceWidth/3, marginLeft: deviceWidth/3, justifyContent: 'center', alignText: 'center', alignItems: 'center', borderWidth: 1, borderRadius: 15}}><Text style={{color: colorOfText, shadowOpacity: 0.5}}>Save</Text></View></TouchableOpacity>
+                  <TouchableOpacity onPress={() => {setNewRatings()}} style={{paddingTop: 5}}><View style={{backgroundColor: littleSection, height: deviceHeightPart, width: deviceWidth/3, marginLeft: deviceWidth/3, justifyContent: 'center', alignText: 'center', alignItems: 'center', borderWidth: 1, borderRadius: 15}}><Text style={{color: colorOfText, shadowOpacity: 0.5}}>Save</Text></View></TouchableOpacity>
                   <View style={{zIndex: -100000, height: deviceHeightPart*25, justifyContent: 'flex-end',}}></View>
                   </ScrollView>
                   </View>
