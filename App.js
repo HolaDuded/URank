@@ -28,13 +28,16 @@ let color = "#16182d";
 let settingsBackgroundColor = color;
 let sectionBackgroundColor = '#252944';
 let littleSection = '#3b3e5d';
+let editOrNotColor = littleSection;
 
 let taskbarHeight = deviceHeightPart*1.5;
 let iconWidth = taskbarHeight;
 let iconBackgroundWidth = iconWidth*1.2;
 let iconBackgroundHeight = taskbarHeight*1.2;
-let iconColor = '#47e7a9';
+// let iconColor = '#47e7a9';
+let iconColor = '#1421a6';
 let colorOfText = '#fdfeff';
+let colorOfTitleText = '#ffffff';
 
 let splashed = false;
 let vered = false;
@@ -56,10 +59,10 @@ export default function App() {
         splashed = true;
       }
       if (vered == false){
-        console.log('VERSION 0.3.4');
+        console.log('VERSION 0.3.5');
         console.log();
-        console.log('- Fixed saving bugs');
-        console.log('- Added general notes');
+        console.log('- Added functionality: save button changes color is saved vs unsaved');
+        console.log('- ');
         console.log();
         vered = true;
       }
@@ -104,7 +107,9 @@ export default function App() {
 
   const [deleteConfirmVis, setDeleteConfirmVis] = useState(false);
 
-  const [genNotes, setGenNotes] = useState('');
+  const [genNotes, setGenNotes] = useState(' ');
+
+  const [editted, setEditted] = useState(false);
  
   useEffect(() => {
     async function initUser() {
@@ -410,10 +415,12 @@ export default function App() {
   let setNewRatings = async () => {
     let arrRNew = [valueM1, valueM2, valueM3, valueM4, valueM5, valueM6, valueM7, valueM8]
     try {
-      const rjsonValue = JSON.stringify(arrRNew)
+      let rjsonValue = JSON.stringify(arrRNew)
+      console.log('rjsonValue - ' + rjsonValue)
       console.log(value)
       await AsyncStorage.setItem('ratingKey' + value, rjsonValue)
       await AsyncStorage.setItem('genNotes' + value, genNotes).then(Alert.alert('Ratings Successfully Saved'))
+      editOrNotColor = littleSection;
     } catch (e) {
       console.log(e)
     }
@@ -497,6 +504,7 @@ export default function App() {
     console.log(rVal.value)
     let holdingNotes = await AsyncStorage.getItem('genNotes' + rVal.value)
     setGenNotes(holdingNotes)
+    let editOrNotColor = littleSection;
 
     // addRating(rKey, newArray)
 
@@ -515,8 +523,11 @@ export default function App() {
   let homeWhite = require('./assets/img/homeIconV2White.png');
   let collegeWhite = require('./assets/img/collegeIconWhite.png');
   let settingsWhite = require('./assets/img/settingsGearWheelWhite.png');
-  let hamburgerIcon = require('./assets/img/hamburgerMenuIcon.png');
-  let plusIcon = require('./assets/img/plusIcon.png');
+  let hamburgerIcon = require('./assets/img/hamburgerMenuIconV2.png');
+  // let hamburgerIcon = require('./assets/img/hamburgerMenuIconWhite.png');
+  // let plusIcon = require('./assets/img/plusIcon.png');
+  let plusIcon = require('./assets/img/plusIconDark.png');
+  // let plusIcon = require('./assets/img/plusIconWhite.png');
   let deleteMenuIcon = require('./assets/img/deleteMenu.png')
   let reloadIcon = require('./assets/img/refresh.png')
 
@@ -654,7 +665,7 @@ export default function App() {
         <SafeAreaView>
         <View style={{overflow: 'hidden', paddingBottom: 5}}>
           <View style={styles.topMargin}>
-            <Text style={{fontSize: 24, fontFamily: ff, marginBottom: 0, fontWeight: 'bold', color: colorOfText, shadowOpacity: 0.5}}>College Ranker</Text>
+            <Text style={{fontSize: 24, fontFamily: ff, marginBottom: 0, fontWeight: 'bold', color: colorOfText, shadowOpacity: 0.5}}>URank</Text>
           </View>
         </View>
         <View style={styles.topTaskbar}>
@@ -684,8 +695,8 @@ export default function App() {
           
         </View>
         <View style={{position: 'absolute', top: -deviceHeightPart*3, right: (2*deviceWidth/6)-7.5,}}>{valueMenu=='home' ? (<>
-          <View style={{backgroundColor: iconColor, borderWidth: 1, position: 'absolute', top: deviceHeightPart*5.5, right: 0, marginTop: 5, borderRadius: 150, height: taskbarHeight+10, width: iconWidth+10}}></View>
-          <TouchableOpacity onPress={addCollegeModal} style={{position: 'absolute', top: deviceHeightPart*5.5, right: 0, margin: 5, marginTop: 10, height: taskbarHeight, width: iconWidth}}>
+          <View style={{backgroundColor: iconColor, shadowOpacity: 0.25, borderWidth: 0, position: 'absolute', top: deviceHeightPart*5.5, right: 0, marginTop: 10, borderRadius: 150, height: taskbarHeight+10, width: iconWidth+10}}></View>
+          <TouchableOpacity onPress={addCollegeModal} style={{position: 'absolute', shadowOpacity: 0.125, top: deviceHeightPart*5.5, right: 0, margin: 5, marginTop: 15, height: taskbarHeight, width: iconWidth}}>
             <Image source={plusIcon} style={{height: taskbarHeight, width: iconWidth}}/>
           </TouchableOpacity>
           <Modal
@@ -780,8 +791,8 @@ export default function App() {
             modalAnimationType="slide"
             style={{height: 0,width: 0,opacity: 0,position: 'absolute',top: 0, left: 0}}
           />
-          <View style={{backgroundColor: iconColor, borderWidth: 1, position: 'absolute', top: deviceHeightPart*5.5, right: 0, marginTop: 5, borderRadius: 7.5, height: taskbarHeight+10, width: iconWidth+10}}></View>
-          <TouchableOpacity onPress={setOpenMenuToggle} style={{position: 'absolute', top: deviceHeightPart*5.5, right: 0, margin: 5, marginTop: 10, height: taskbarHeight, width: iconWidth}}>
+          <View style={{backgroundColor: iconColor, shadowOpacity: 0.5, position: 'absolute', top: deviceHeightPart*5.5, right: 0, marginTop: 10, borderRadius: 7.5, height: taskbarHeight+10, width: iconWidth+10}}></View>
+          <TouchableOpacity onPress={setOpenMenuToggle} style={{position: 'absolute', shadowOpacity: 0.125, top: deviceHeightPart*5.5, right: 0, margin: 5, marginTop: 15, height: taskbarHeight, width: iconWidth}}>
             <Image source={hamburgerIcon} style={{height: taskbarHeight, width: iconWidth}}/>
           </TouchableOpacity>
         
@@ -847,8 +858,8 @@ export default function App() {
                         <View style={{backgroundColor: sectionBackgroundColor, alignItems: 'center', justifyContent: 'space-between', height: deviceHeightPart*1.5, flexDirection: 'row', marginBottom: 5, width: deviceWidth-10, marginLeft: 5, borderWidth: 1, borderRadius: 15}}>
                           <Text style={{fontSize: 24, marginLeft: 3.5, color: colorOfText, shadowOpacity: 0.5}}>{item.label}</Text>
                           <TouchableOpacity onPress={() => {setDeleteConfirmVis(true); let indexM = index}}>
-                            <View style={{backgroundColor: 'red', textAlign: 'center', marginRight: 5, alignItems: 'center', justifyContent: 'center', height: deviceHeightPart, width: deviceHeightPart, borderWidth: 1, borderRadius: 25}}>
-                              <Text>-</Text>
+                            <View style={{backgroundColor: '#dd0000', display: 'flex', textAlign: 'center', marginRight: 5, alignItems: 'center', justifyContent: 'center', height: deviceHeightPart, width: deviceHeightPart, borderWidth: 1, borderRadius: 25}}>
+                              <Text style={{fontSize: 24, fontWeight: 'bold', paddingBottom: 2}}>–</Text>
                             </View>
                           </TouchableOpacity>
                         </View>
@@ -1106,11 +1117,17 @@ export default function App() {
                   <Image source={reloadIcon} style={{height: taskbarHeight, width: iconWidth}}/>
                 </TouchableOpacity>
               </View> */}
+              <View style={{backgroundColor: sectionBackgroundColor, justifyContent: 'space-between', display: 'flex', flexDirection: 'row', height: 42, width: deviceWidth-10, marginLeft: 5, borderWidth: 1, borderRadius: 5}}>
+                <Text style={{fontSize: 32, marginLeft: 3.5, paddingLeft: 4.5, color: colorOfTitleText, shadowOpacity: 0.5}}>College Name</Text>
+                <View style={{alignItems: 'flex-end', marginRight: 5}}>
+                  <Text style={{fontSize: 32, color: colorOfTitleText, shadowOpacity: 0.5}}>Score</Text>
+                </View>
+              </View>
               <FlatList 
                 data={valueT.slice(1)}
                 renderItem={({ item, index }) => 
-                  <View style={{backgroundColor: sectionBackgroundColor, marginBottom: 5, width: deviceWidth-10, marginLeft: 5, borderWidth: 1, borderRadius: 5}}>
-                    <Text style={{fontSize: 24, marginLeft: 3.5, color: colorOfText, shadowOpacity: 0.5}}>{item.label}</Text>
+                  <View style={{backgroundColor: sectionBackgroundColor, marginTop: 5, width: deviceWidth-10, marginLeft: 5, borderWidth: 1, borderRadius: 5}}>
+                    <Text style={{fontSize: 24, marginLeft: 3.5, paddingLeft: 4.5, color: colorOfText, shadowOpacity: 0.5}}>{item.label}</Text>
                     <View style={{alignItems: 'flex-end', marginTop: -26, marginRight: 5}}>
                       <Text style={{fontSize: 24, marginLeft: 3.5, color: colorOfText, shadowOpacity: 0.5}}>
                         {Math.round(ratingsTotals[index]*100)/100}
@@ -1141,6 +1158,7 @@ export default function App() {
                   <View><Text style={{fontSize: deviceHeightPart, shadowOpacity: 0.5, color: 'white', fontWeight: 'bold', margin: 5}}>{colleges[colleges.findIndex(e => e.value == value)].label}</Text></View>
                 </View>
                 <View style={{}}>
+                <TouchableOpacity onPress={() => {setNewRatings()}} style={{paddingTop: 5}}><View style={{backgroundColor: editOrNotColor, height: deviceHeightPart, width: deviceWidth/3, marginLeft: deviceWidth/3, justifyContent: 'center', alignText: 'center', alignItems: 'center', borderWidth: 1, borderRadius: 15}}><Text style={{color: colorOfText, shadowOpacity: 0.5}}>Save</Text></View></TouchableOpacity>
                 <ScrollView style={{height: (deviceHeightPart*2)*16}}>
                   <View style={{height: deviceHeightPart*2, backgroundColor: sectionBackgroundColor, zIndex: -1, border: 'gray', marginTop: 5, justifyContent: 'right', marginLeft: 5, flexDirection: 'row', alignItems: 'center', marginBottom: 5, borderWidth: 1, borderRadius: 10, width: deviceWidth-10, }}>
                   <View style={{width:(7.3*(deviceWidth))/10}}><Text style={styles.factors}>{factors[0].name}</Text></View>
@@ -1153,6 +1171,10 @@ export default function App() {
                         setOpen = {setOpenM1}
                         setValue = {setValueM1}
                         setItems = {setItemsM1}
+
+                        onChangeValue={(changeValue) => {
+                          editOrNotColor = 'red';
+                        }}
 
                         closeAfterSelecting = {true}
                         // dropDownContainerStyle={{zIndex: -1}}
@@ -1178,6 +1200,10 @@ export default function App() {
                         setValue = {setValueM2}
                         setItems = {setItemsM2}
 
+                        onChangeValue={(changeValue) => {
+                          editOrNotColor = 'red';
+                        }}
+
                         closeAfterSelecting = {true}
                         showBadgeDot = {false}
                         theme = "DARK"
@@ -1201,6 +1227,10 @@ export default function App() {
                         setOpen = {setOpenM3}
                         setValue = {setValueM3}
                         setItems = {setItemsM3}
+
+                        onChangeValue={(changeValue) => {
+                          editOrNotColor = 'red';
+                        }}
 
                         closeAfterSelecting = {true}
                         showBadgeDot = {false}
@@ -1226,6 +1256,10 @@ export default function App() {
                         setValue = {setValueM4}
                         setItems = {setItemsM4}
 
+                        onChangeValue={(changeValue) => {
+                          editOrNotColor = 'red';
+                        }}
+
                         closeAfterSelecting = {true}
                         showBadgeDot = {false}
                         theme = "DARK"
@@ -1249,6 +1283,10 @@ export default function App() {
                         setOpen = {setOpenM5}
                         setValue = {setValueM5}
                         setItems = {setItemsM5}
+
+                        onChangeValue={(changeValue) => {
+                          editOrNotColor = 'red';
+                        }}
 
                         closeAfterSelecting = {true}
                         showBadgeDot = {false}
@@ -1274,6 +1312,10 @@ export default function App() {
                         setValue = {setValueM6}
                         setItems = {setItemsM6}
 
+                        onChangeValue={(changeValue) => {
+                          editOrNotColor = 'red';
+                        }}
+
                         closeAfterSelecting = {true}
                         showBadgeDot = {false}
                         theme = "DARK"
@@ -1298,6 +1340,10 @@ export default function App() {
                         setValue = {setValueM7}
                         setItems = {setItemsM7}
 
+                        onChangeValue={(changeValue) => {
+                          editOrNotColor = 'red';
+                        }}
+
                         closeAfterSelecting = {true}
                         showBadgeDot = {false}
                         theme = "DARK"
@@ -1321,6 +1367,10 @@ export default function App() {
                         setOpen = {setOpenM8}
                         setValue = {setValueM8}
                         setItems = {setItemsM8}
+
+                        onChangeValue={(changeValue) => {
+                          editOrNotColor = 'red';
+                        }}
 
                         closeAfterSelecting = {true}
                         showBadgeDot = {false}
@@ -1350,13 +1400,14 @@ export default function App() {
                       backgroundColor: 'white',
                     }}
                     keyboardAppearance='dark'
+                    placeholder='General College Notes'
                     autoCorrect = {true}
                     autoCapitalize = 'sentences'
                     onChangeText={setGenNotes}
                     value={genNotes}
                   /></View>      
                   {/* <TouchableHighlight onPress={() => setFactors(initFactors)}><Text>RESET FACTORS</Text></TouchableHighlight> */}
-                  <TouchableOpacity onPress={() => {setNewRatings()}} style={{paddingTop: 5}}><View style={{backgroundColor: littleSection, height: deviceHeightPart, width: deviceWidth/3, marginLeft: deviceWidth/3, justifyContent: 'center', alignText: 'center', alignItems: 'center', borderWidth: 1, borderRadius: 15}}><Text style={{color: colorOfText, shadowOpacity: 0.5}}>Save</Text></View></TouchableOpacity>
+                  {/*<TouchableOpacity onPress={() => {setNewRatings()}} style={{paddingTop: 5}}><View style={{backgroundColor: littleSection, height: deviceHeightPart, width: deviceWidth/3, marginLeft: deviceWidth/3, justifyContent: 'center', alignText: 'center', alignItems: 'center', borderWidth: 1, borderRadius: 15}}><Text style={{color: colorOfText, shadowOpacity: 0.5}}>Save</Text></View></TouchableOpacity>*/}
                   <View style={{zIndex: -100000, height: deviceHeightPart*25, justifyContent: 'flex-end',}}></View>
                   </ScrollView>
                   </View>
