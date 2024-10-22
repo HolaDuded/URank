@@ -9,6 +9,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import uuid from 'react-native-uuid';
 import { BlurView } from 'expo-blur';
+import { ProgressBar, ActivityIndicator, MD3Colors, MD2DarkTheme, MD2Colors } from 'react-native-paper';
 
 import * as SplashScreen from 'expo-splash-screen';
 
@@ -46,6 +47,10 @@ let vered = false;
 
 let indexM = '';
 
+let slicedRatingsTotals = [];
+let FWT = [];
+let ratingsLoaded = false;
+
 SplashScreen.preventAutoHideAsync();
 
 export default function App() {
@@ -56,7 +61,7 @@ export default function App() {
     async function prepare() {
       if (splashed == false){
         await SplashScreen.preventAutoHideAsync();
-        await new Promise(resolve => setTimeout(resolve, 2000));
+        await new Promise(resolve => setTimeout(resolve, 1000));
         await SplashScreen.hideAsync();
         splashed = true;
       }
@@ -101,11 +106,13 @@ export default function App() {
   const [valueT, setValueT] = useState([{label: 'Select a College', value: 'select', ratingKey: 'ratingKeyselect', key: uuid.v4()}])
 
 //   const [semiOldVal, setSemiOldVal] = useState('select')
-  const [oldVal, setOldVal] = useState('select')
+  const [oldVal, setOldVal] = useState('select');
 //   const [ratingsListMyCol, setRatingsListMyCol] = useState()
-  const [ratingsTotals, setRatingsTotals] = useState([])
+  const [ratingsTotals, setRatingsTotals] = useState([]);
 
-  const [firstTime, setFirstTime] = useState('true')
+  const [ORT, setORT] = useState([{name: 'N/A', value: 0}]);
+
+  const [firstTime, setFirstTime] = useState('true');
 
   const [deleteConfirmVis, setDeleteConfirmVis] = useState(false);
 
@@ -183,62 +190,30 @@ export default function App() {
   let getRating = async (ratingKey) => {
     // console.log()
     let rKey = ratingKey
-    console.log('-----rKey-----')
-    console.log('rKey - ')
-    console.log(rKey)
-    console.log('-----rKey-----')
+    // console.log('-----rKey-----')
+    // console.log('rKey - ')
+    // console.log(rKey)
+    // console.log('-----rKey-----')
     let jsonValue = await AsyncStorage.getItem(rKey);
-    // console.log('URL_jsonvalue - ')
-    // console.log(jsonValue)
     let parsedJSONValue = JSON.parse(jsonValue);
-    console.log('GR_parsedJSONValue - ')
-    console.log(parsedJSONValue)
-
-
+    // console.log('GR_parsedJSONValue - ')
+    // console.log(parsedJSONValue)
     let ratings = parsedJSONValue
     let total = 0
-    // console.log('weights - ')
-    // console.log(weights)
-    console.log('-----forLoop-----')
     for (let i = 0; i < ratings.length; i = i + 1){
       total = total + ((ratings[i])*(weights[i]/10))
-      console.log()
-      console.log('i - '+i)
-      console.log()
-      console.log('ratings[i] - ')
-      console.log(ratings[i])
-      console.log()
-      console.log('weight[i].weight - ')
-      console.log(weights[i])
-      console.log()
-      console.log('total - ')
-      console.log(total)
-      console.log()
     }
-    console.log('-----forLoop-----')
-    // let GR_total = ratingsTotals.concat(ratingsTotals, total)
-    // GR_total.push(ratingsTotals)
-    // let arrOfTheNew = ratingsTotals.push(total)
-    ratingsTotals.push(total)
-    // setRatingsTotals(GR_total)
-    // console.log()
-    // console.log('GR_total - ')
-    // console.log(GR_total)
-
-    let slicedRatingsTotals = ratingsTotals.slice(-valueT.length + 1, ratingsTotals.length)
-
-    console.log()
-    console.log('slicedRatingsTotals - ')
-    console.log(slicedRatingsTotals)
-    console.log()
-
-    console.log()
-    console.log('GR_ratingsTotals - ')
-    console.log(ratingsTotals)
-    console.log()
-
-    setRatingsTotals(slicedRatingsTotals)
-
+    ratingsTotals.push(total);
+    slicedRatingsTotals = ratingsTotals.slice(-valueT.length + 1, ratingsTotals.length);
+    // console.log();
+    // console.log('slicedRatingsTotals - ');
+    // console.log(slicedRatingsTotals);
+    // console.log();
+    // console.log();
+    // console.log('GR_ratingsTotals - ');
+    // console.log(ratingsTotals);
+    // console.log();
+    setRatingsTotals(slicedRatingsTotals);
   };
 
   // useEffect(() => {
@@ -370,11 +345,12 @@ export default function App() {
     updateColleges('collegeList')
   };
 
-  let addCollege = (nameI, valueI) => {
+  let addCollege = async (nameI, valueI) => {
     let newList = valueT.concat({label: nameI, value: valueI, ratingKey: 'ratingKey'+valueI, key: uuid.v4()})
     addRating('ratingKey' + valueI, [0, 0, 0, 0, 0, 0, 0, 0])
     setValueT(newList)
-    storeDataJSON('collegeList', newList).then(updateColleges('collegeList'))
+    await storeDataJSON('collegeList', newList)
+    await updateColleges('collegeList')
   };
 
   let formatCollegeName = (name) => {
@@ -391,15 +367,15 @@ export default function App() {
     return formattedName
   };
 
-  let addCollegeSumbitButton = () => {
+  let addCollegeSumbitButton = async () => {
     let valueR = formatCollegeName(text)
     if (valueR == 'select'){
-      Alert.alert('Invalid College Name')
+      Alert.alert('Invalid College Name');
       return
     }
-    addCollege(text, valueR)
-    setText('')
-    setModalVisible(!modalVisible)
+    await addCollege(text, valueR);
+    setText('');
+    setModalVisible(!modalVisible);
 
 
 
@@ -409,10 +385,13 @@ export default function App() {
     // // console.log(str(colleges))
     // // console.log(valueR)
     // // new Promise(resolve => setTimeout(resolve, 1000)).then(setValue(valueR))
-    // new Promise(resolve => setTimeout(resolve, 10000)).then(setValue(valueR)).then(console.log('PROMISE RESOLVED'))
-    // // console.log('PROMISE RESOLVED')
-    // // setValue(valueR)
-    // // onCollegesValueChange(valueR)
+    // onCollegesValueChange(valueR);
+    // console.log('promise started');
+    // await new Promise(resolve => setTimeout(resolve, 2000))//.then(setValue(valueR)).then(console.log('PROMISE RESOLVED'))
+    // console.log('PROMISE RESOLVED');
+    // console.log(valueR);
+    // console.log(colleges);
+    // setValue(valueR);
   };
 
   let addCollegeModal = () => {
@@ -539,7 +518,51 @@ export default function App() {
 
   }
 
+  let max = (num) => {
+    let len = num.length;
+    let mx = {name: 'N/A', value: 0};
+    for (let i = 0; i < len; i = i + 1){
+      if (num[i].value > mx.value){
+        mx = num[i]
+      }
+    }
+    return mx
+  }
 
+  let min = (num) => {
+    let len = num.length;
+    let mn = {name: 'N/A', value: 1000000};
+    for (let i = 0; i < len; i = i + 1){
+      if (num[i].value < mn.value){
+        mn = num[i]
+      }
+    }
+    return mn
+  }
+
+  let valueMenuValueChange = async (value) => {
+    if (value == 'myColleges'){
+      ratingsLoaded = false;
+      for (let i = 1; i < valueT.length; i = i + 1){
+        getRating(valueT[i].ratingKey)
+      }
+      editOrNotColor = littleSection;
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      let dummyWT = [];
+      let len = slicedRatingsTotals.length;
+      for (let i = 0; i < len; i = i + 1){
+        dummyWT.push({name: valueT[i + 1].label, value:slicedRatingsTotals[i]})
+      }
+      let dummyT = dummyWT;
+      let dummyTLen = dummyT.length;
+      let newRT = [];
+      for (i = 0; i < dummyTLen; i = i + 1){
+        newRT.push(max(dummyT));
+        dummyT.splice(dummyT.indexOf(max(dummyT)), 1);
+      }
+      FWT = newRT;
+      ratingsLoaded = true;
+  }}
 
 
   setOpenMenuToggle = () => {
@@ -793,27 +816,7 @@ export default function App() {
               
             }}
 
-            onChangeValue = {(value) => {
-              // setViewedWeights()
-              console.log('------BEFORE------')
-              console.log('valueT.length - ')
-              console.log(valueT.length)
-              for (let i = 1; i < valueT.length; i = i + 1){
-                console.log()
-                console.log('valueT['+{i}+'].ratingKey - ')
-                console.log(valueT[i].ratingKey)
-                console.log()
-                getRating(valueT[i].ratingKey)
-                console.log('ratingsTotals - ')
-                // console.log(ratingsTotals) //attempt fix remove
-              }
-              console.log('------AFTER------')
-              console.log()
-              console.log()
-              editOrNotColor = littleSection;
-              // delay(2500).then(setViewedWeights())
-              
-            }}
+            onChangeValue = {async (value) => {await valueMenuValueChange(value)}}
             
             closeAfterSelecting={true}
             textStyle={{fontSize: 30, color: colorOfText, shadowOpacity: 0.5}}
@@ -829,7 +832,6 @@ export default function App() {
           </TouchableOpacity>
         
         </View>
-
           <View style={styles.pages}>
 
 {/*//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/}
@@ -1180,20 +1182,30 @@ export default function App() {
                   <Image source={reloadIcon} style={{height: taskbarHeight, width: iconWidth}}/>
                 </TouchableOpacity>
               </View> */}
-              <View style={{backgroundColor: sectionBackgroundColor, justifyContent: 'space-between', display: 'flex', flexDirection: 'row', height: 42, width: deviceWidth-10, marginLeft: 5, borderWidth: 1, borderRadius: 5}}>
-                <Text style={{fontSize: 32, marginLeft: 3.5, paddingLeft: 4.5, color: colorOfTitleText, shadowOpacity: 0.5}}>College Name</Text>
-                <View style={{alignItems: 'flex-end', marginRight: 5}}>
-                  <Text style={{fontSize: 32, color: colorOfTitleText, shadowOpacity: 0.5}}>Score</Text>
+              <View style={{shadowOffset: {width: 0, height: 5}, shadowOpacity: 0.5, marginBottom: 10, width: deviceWidth}}>
+                <View style={{backgroundColor: sectionBackgroundColor, justifyContent: 'space-between', display: 'flex', flexDirection: 'row', height: 42, width: deviceWidth-10, marginLeft: 5, borderWidth: 1, borderRadius: 5}}>
+                  <Text style={{fontSize: 32, marginLeft: 3.5, paddingLeft: 4.5, color: colorOfTitleText, shadowOpacity: 0.5}}>College Name</Text>
+                  <View style={{alignItems: 'flex-end', marginRight: 5}}>
+                    <Text style={{fontSize: 32, color: colorOfTitleText, shadowOpacity: 0.5}}>Score</Text>
+                  </View>
                 </View>
               </View>
+              <View style={{display:'flex', position:'absolute', left: (deviceWidth/2) - ((deviceWidth/8)/2), top: (deviceHeight)/8, zIndex: 10000, marginVertical: 10}}>
+                <ActivityIndicator
+                  animating = {!ratingsLoaded}
+                  size={deviceWidth/8}
+                  color = {MD2Colors.grey500}
+                />
+              </View>
               <FlatList 
-                data={valueT.slice(1)}
+                data={FWT.slice()}
+                style={{display: 'flex'}}
                 renderItem={({ item, index }) => 
                   <View style={{backgroundColor: sectionBackgroundColor, marginTop: 5, width: deviceWidth-10, marginLeft: 5, borderWidth: 1, borderRadius: 5}}>
-                    <Text style={{fontSize: 24, marginLeft: 3.5, paddingLeft: 4.5, color: colorOfText, shadowOpacity: 0.5}}>{item.label}</Text>
+                    <Text style={{fontSize: 24, marginLeft: 3.5, paddingLeft: 4.5, color: colorOfText, shadowOpacity: 0.5}}>{FWT[index].name}</Text>
                     <View style={{alignItems: 'flex-end', marginTop: -26, marginRight: 5}}>
                       <Text style={{fontSize: 24, marginLeft: 3.5, color: colorOfText, shadowOpacity: 0.5}}>
-                        {Math.round(ratingsTotals[index]*100)/100}
+                        {Math.round(FWT[index].value*100)/100}
                       </Text>
                     </View>
                     {/* <Text style={{fontSize: 24, marginLeft: 3.5, color: colorOfText, shadowOpacity: 0.5}}>{ratingsTotals[index]}</Text> */}
