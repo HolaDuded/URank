@@ -66,10 +66,10 @@ export default function App() {
         splashed = true;
       }
       if (vered == false){
-        console.log('VERSION 0.3.6');
+        console.log('VERSION 0.3.7');
         console.log();
-        console.log('- Lots of stuff changed, just check the commit for specifics');
-        console.log('- Date: 10/17/2024 @ 6:13 PM');
+        console.log('- Organized college ranked page');
+        console.log('- Added loading wheel');
         console.log();
         vered = true;
       }
