@@ -379,19 +379,19 @@ export default function App() {
 
 
 
-    // updateColleges('collegeList')
-    // setColleges(valueT)
+    await updateColleges('collegeList')
+    setColleges(valueT)
+    onCollegesValueChange(valueR);
     // // console.log("\n\n\n\n\n\n\ntext: "+text+"\nvalueR:"+valueR+"\n"+colleges+"\n"+colleges[colleges.length - 1]+"\n\n\n\n\n")
     // // console.log(str(colleges))
     // // console.log(valueR)
     // // new Promise(resolve => setTimeout(resolve, 1000)).then(setValue(valueR))
-    // onCollegesValueChange(valueR);
-    // console.log('promise started');
-    // await new Promise(resolve => setTimeout(resolve, 2000))//.then(setValue(valueR)).then(console.log('PROMISE RESOLVED'))
-    // console.log('PROMISE RESOLVED');
-    // console.log(valueR);
-    // console.log(colleges);
-    // setValue(valueR);
+    console.log('promise started');
+    await new Promise(resolve => setTimeout(resolve, 2000))//.then(setValue(valueR)).then(console.log('PROMISE RESOLVED'))
+    console.log('PROMISE RESOLVED');
+    console.log(valueR);
+    console.log(colleges);
+    setValue(valueR);
   };
 
   let addCollegeModal = () => {
@@ -520,7 +520,7 @@ export default function App() {
 
   let max = (num) => {
     let len = num.length;
-    let mx = {name: 'N/A', value: 0};
+    let mx = {name: 'N/A', value: -1};
     for (let i = 0; i < len; i = i + 1){
       if (num[i].value > mx.value){
         mx = num[i]
@@ -1219,6 +1219,7 @@ export default function App() {
                 }
                 // keyExtractor={(item) => item.key}
               />
+              <View style={{height: 50}}></View>
               
             </>) : null}</View>
 
