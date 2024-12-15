@@ -1515,30 +1515,7 @@ export default function App() {
             </>) : null}</View>
           </View>
  
-          {/* <View style={styles.colleges}>
-            <View>{value=='madison' ? (<>
-
-
-
-            </>) : null}</View>
-
-            <View>{value=='laCrosse' ? (<>
-
-
-
-            </>) : null}</View>
-
-            <View>{value=='stevensPoint' ? (<>
-
-
-
-            </>) : null}</View>
-
-            <View>{value=='ntc' ? (<>
-
-            </>) : null}</View>
-          
-          </View> */}
+         
         </SafeAreaView>
         </>) : null}</View>
 
