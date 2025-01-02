@@ -69,10 +69,10 @@ export default function App() {
         splashed = true;
       }
       if (vered == false){
-        console.log('VERSION 0.3.7');
+        console.log('VERSION 0.4.0');
         console.log();
-        console.log('- Organized college ranked page');
-        console.log('- Added loading wheel');
+        console.log('- Numerical inputs added');
+        console.log('- Simulate menuValue changes');
         console.log();
         vered = true;
         console.log('Simulating menuValue change');
