@@ -3,7 +3,7 @@
 {/* <StatusBar style="dark" /> */}
 import React, { Component, useState, useEffect, useCallback } from 'react';
 import DropDownPicker from 'react-native-dropdown-picker';
-import { AppRegistry, Text, View, StyleSheet, Image, FlatList, SectionList, TextInput, Modal, ImageBackground, TouchableOpacity, TouchableHighlight, Alert, Dimensions, SafeAreaView, ScrollView } from 'react-native';
+import { AppRegistry, Platform, Text, View, StyleSheet, Image, FlatList, SectionList, TextInput, Modal, ImageBackground, TouchableOpacity, TouchableHighlight, Alert, Dimensions, SafeAreaView, ScrollView } from 'react-native';
 import Constants from 'expo-constants';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -42,6 +42,9 @@ let iconColor = '#2d3269';
 let colorOfText = '#fdfeff';
 let colorOfTitleText = '#ffffff';
 
+let numberInputBoxBgColor = "#282d40";
+let numberInputTextColor = "#a4abbc";
+
 let splashed = false;
 let vered = false;
 
@@ -62,7 +65,7 @@ export default function App() {
       if (splashed == false){
         await SplashScreen.preventAutoHideAsync();
         await new Promise(resolve => setTimeout(resolve, 1000));
-        await SplashScreen.hideAsync();
+        // await SplashScreen.hideAsync();
         splashed = true;
       }
       if (vered == false){
@@ -72,6 +75,11 @@ export default function App() {
         console.log('- Added loading wheel');
         console.log();
         vered = true;
+        console.log('Simulating menuValue change');
+        await valueMenuValueChange('myColleges');
+        await valueMenuValueChange('settings');
+        console.log('Simulated menuValue change');
+        await SplashScreen.hideAsync();
       }
     }
 
@@ -80,14 +88,15 @@ export default function App() {
     prepare();
   }, []);
 
-  useEffect(() => {
-    async function doFuncThing() {
-      if (appIsReady) {
-        await SplashScreen.hideAsync();
-      }
-    }
-    doFuncThing();
-  }, [appIsReady]);
+  // useEffect(() => {
+  //   async function doFuncThing() {
+  //     if (appIsReady) {
+  //       await SplashScreen.hideAsync();
+  //       // console.log('splash screen hidden');
+  //     }
+  //   }
+  //   doFuncThing();
+  // }, [appIsReady]);
 
 
 
@@ -542,6 +551,11 @@ export default function App() {
 
   let valueMenuValueChange = async (value) => {
     if (value == 'myColleges'){
+      // console.log("");
+      // console.log("");
+      // console.log("College Changed");
+      // console.log("");
+      // console.log("");
       ratingsLoaded = false;
       for (let i = 1; i < valueT.length; i = i + 1){
         getRating(valueT[i].ratingKey)
@@ -561,15 +575,36 @@ export default function App() {
         dummyT.splice(dummyT.indexOf(max(dummyT)), 1);
       }
       FWT = newRT;
+      // console.log("");
+      // console.log("");
+      console.log("FWR Generated");
+      // console.log(FWT);
+      // console.log("");
+      // console.log("");
       ratingsLoaded = true;
-  }}
+    }
+    else if (value == 'settings'){
+      // console.log("");
+      // console.log("");
+      // console.log("WEIGHTING NOW");
+      // console.log("");
+      // console.log("");
+      setViewedWeights()
+      await new Promise(resolve => setTimeout(resolve, 3000));
+      // console.log("");
+      // console.log("");
+      console.log("WEIGHTING COMPLETE");
+      // console.log("");
+      // console.log("");
+    }
+  }
 
 
   setOpenMenuToggle = () => {
     setOpenMenu(true)
     setValue('select')
     setOpen(false)
-    setViewedWeights()
+    // setViewedWeights()
   };
 
   let homeWhite = require('./assets/img/homeIconV2White.png');
@@ -659,6 +694,15 @@ export default function App() {
   const [openS8, setOpenS8] = useState(false);
   const [valueS8, setValueS8] = useState(0)
   const [itemsS8, setItemsS8] = useState(listOneThruTen);
+
+  const [S1Focus, setS1Focus] = useState(false);
+  const [S2Focus, setS2Focus] = useState(false);
+  const [S3Focus, setS3Focus] = useState(false);
+  const [S4Focus, setS4Focus] = useState(false);
+  const [S5Focus, setS5Focus] = useState(false);
+  const [S6Focus, setS6Focus] = useState(false);
+  const [S7Focus, setS7Focus] = useState(false);
+  const [S8Focus, setS8Focus] = useState(false);
   
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -693,6 +737,15 @@ export default function App() {
   const [openM8, setOpenM8] = useState(false);
   const [valueM8, setValueM8] = useState(0)
   const [itemsM8, setItemsM8] = useState(listOneThruTen);
+
+  const [M1Focus, setM1Focus] = useState(false);
+  const [M2Focus, setM2Focus] = useState(false);
+  const [M3Focus, setM3Focus] = useState(false);
+  const [M4Focus, setM4Focus] = useState(false);
+  const [M5Focus, setM5Focus] = useState(false);
+  const [M6Focus, setM6Focus] = useState(false);
+  const [M7Focus, setM7Focus] = useState(false);
+  const [M8Focus, setM8Focus] = useState(false);
   
 
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -714,8 +767,8 @@ export default function App() {
     <SafeAreaProvider>
       <View style={styles.container}>{firstTime=='false' ? (<>
         <View style={{backgroundColor: color, position:'absolute', top:0, left:0, width: deviceWidth, height:deviceHeightPart*1.5}}></View>
-        <SafeAreaView>
-        <View style={{overflow: 'hidden', paddingBottom: 5}}>
+        {/*{Platform.OS === 'ios' ? (*/}<SafeAreaView>
+        <View style={{overflow: Platform.OS === 'ios' ? 'hidden' : 'visible', paddingBottom: 5}}>
           <View style={styles.topMargin}>
             <Text style={{fontSize: 24, fontFamily: ff, marginBottom: 0, fontWeight: 'bold', color: colorOfText, shadowOpacity: 0.75}}>URank</Text>
           </View>
@@ -745,11 +798,11 @@ export default function App() {
             listMode = "MODAL"
             modalAnimationType="slide"
 
-          style={{ width: deviceWidth/2, height: taskbarHeight+10, position: 'absolute', left: 0, top: 0, margin: 5, marginTop: 0}}/>
+          style={{ width: deviceWidth/2, height: taskbarHeight+10, position: 'absolute', left: 0, top: Platform.OS === 'ios' ? 0:(deviceHeightPart*1.5)+34, margin: 5, marginTop: 0}}/>
           
         </View>
-        <View style={{position: 'absolute', top: -deviceHeightPart*3, right: (2*deviceWidth/6)-7.5,}}>{valueMenu=='home' ? (<>
-          <View style={{backgroundColor: iconColor, shadowOpacity: 0.25, borderWidth: 0, position: 'absolute', top: deviceHeightPart*5.5, right: 0, marginTop: 10, borderRadius: 150, height: taskbarHeight+10, width: iconWidth+10}}></View>
+        <View style={{position: 'absolute', top: Platform.OS === 'ios' ? -deviceHeightPart*3:-deviceHeightPart*3 - 5, right: (2*deviceWidth/6)-7.5,}}>{valueMenu=='home' ? (<>
+          <View style={{backgroundColor: iconColor, shadowOpacity: 0.25, elevation: Platform.OS === 'android' ? 10:0, borderWidth: 0, position: 'absolute', top: deviceHeightPart*5.5, right: 0, marginTop: 10, borderRadius: 150, height: taskbarHeight+10, width: iconWidth+10}}></View>
           <TouchableOpacity onPress={addCollegeModal} style={{position: 'absolute', shadowOpacity: 0.125, top: deviceHeightPart*5.5, right: 0, margin: 5, marginTop: 15, height: taskbarHeight, width: iconWidth}}>
             <Image source={plusIcon} style={{height: taskbarHeight, width: iconWidth}}/>
           </TouchableOpacity>
@@ -803,7 +856,7 @@ export default function App() {
               </SafeAreaView>
             </Modal>
           </>) : null}</View>
-        <View style={{position: 'absolute', top: -deviceHeightPart*3, right: 10, width: deviceWidth/15, height: deviceHeightPart}}>
+        <View style={{position: 'absolute', top: Platform.OS === 'ios' ? -deviceHeightPart*3:-deviceHeightPart*3-5, right: 10, width: deviceWidth/15, height: deviceHeightPart}}>
           <DropDownPicker
             open={openMenu}
             value={valueMenu}
@@ -812,9 +865,7 @@ export default function App() {
             setValue={setValueMenu}
             setItems={setItemsMenu}
 
-            onOpen = {() => {
-              
-            }}
+            onOpen = {() => {}}
 
             onChangeValue = {async (value) => {await valueMenuValueChange(value)}}
             
@@ -839,7 +890,6 @@ export default function App() {
 {/*//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/}
 {/*//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/}
 
-
           <View>{valueMenu=='devMenu' ? (<>
             <View style={{width: deviceWidth, textAlign: 'center', alignItems: 'center', justifyContent: 'center'}}><Text style={{color: 'white', shadowOpacity: 100, margin: 15, fontSize: 24}}>Welcome to the Dev Menu</Text></View>
             <View style={{alignItems: 'center'}}>
@@ -854,17 +904,15 @@ export default function App() {
 {/*<TouchableOpacity style={styles.devMenuItem}><Text style={styles.devMenuItemText}></Text></TouchableOpacity>*/}
           </>) : null}</View>
 
-
 {/*//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/}
 {/*//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/}
 {/*//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/}
 {/*//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/}
-
 
             <View style={{backgroundColor: '', marginTop: 5}}>{valueMenu=='settings' ? (<>
 
 
-              <View style={{position: 'absolute', top: -deviceHeightPart*2.15, left: deviceWidth/2+10, backgroundColor: iconColor, borderWidth: 1, marginTop: 0, borderRadius: 150, height: taskbarHeight+10, alignItems: 'center', justifyContent: 'center', width: iconWidth+10}}>
+              <View style={{position: 'absolute', top: Platform.OS === 'ios' ? -deviceHeightPart*2.15:deviceHeightPart/2.75, left: deviceWidth/2+10, backgroundColor: iconColor, borderWidth: 0, shadowOpacity: 0.5, elevation: Platform.OS === 'ios' ? 0:1, marginTop: 0, borderRadius: 150, height: taskbarHeight+10, alignItems: 'center', justifyContent: 'center', width: iconWidth+10}}>
                 <TouchableOpacity onPress={() => {setDeleteMenuVis(!deleteMenuVis)}} style={{height: taskbarHeight, width: iconWidth}}>
                   <Image source={deleteMenuIcon} style={{height: taskbarHeight, width: iconWidth}}/>
                 </TouchableOpacity>
@@ -909,7 +957,7 @@ export default function App() {
                       {/* <BlurView> */}
                         <SafeAreaView>
                           <View style = {{backgroundColor: 'white', borderRadius: 15, width: '80%', left: '10%', height: 200, top: (deviceHeight - 200)/2, justifyContent: 'center', alignContent: 'center'}}>
-                            <Text style = {{position: 'absolute', top: '5%', textAlign: 'center', padding: 15}}>By deleting this college any notes and ratings will be permanently deleted.  Any photos linked will not be deleted.  If you recreate this college any photos previously linked to the college will not be linked.</Text>
+                            <Text style = {{position: 'absolute', top: '5%', textAlign: 'center', padding: 15}}>By deleting this college any notes and ratings will be permanently deleted. If you recreate the same college the notes and ratings will not be relinked.  Upon deletion there is no way to restore any data.</Text>{/*  Any photos linked will not be deleted.  If you recreate this college any photos previously linked to the college will not be linked.</Text>*/}
                             <TouchableOpacity onPress={() => {setDeleteConfirmVis(false)}}
                               style = {{position: 'absolute', backgroundColor: 'green', borderWidth: 0, borderColor: 'black', borderRadius: 5, bottom: '10%', left: '15%'}}
                               >
@@ -930,12 +978,14 @@ export default function App() {
 
                   </SafeAreaView>
                 </Modal>
+              
+              {Platform.OS == 'android' ? (<View style={{positon: 'relative', top: 0, left: 0, height: taskbarHeight*1.75, width: deviceWidth}}></View>):null}
 
               <ScrollView style={{height: (deviceHeight)}}>
-                <TouchableOpacity onPress={() => {setNewWeights()}}><View style={{backgroundColor: editOrNotColor, height: deviceHeightPart, width: deviceWidth/3, marginLeft: deviceWidth/3, justifyContent: 'center', alignText: 'center', alignItems: 'center', borderWidth: 1, borderRadius: 15}}><Text style={{color: colorOfText, shadowOpacity: 0.5}}>Save</Text></View></TouchableOpacity>
-                <View style={{height: deviceHeightPart*2, backgroundColor: sectionBackgroundColor, border: 'gray', marginTop: 5, justifyContent: 'right', marginLeft: 5, flexDirection: 'row', alignItems: 'center', marginBottom: 5, borderWidth: 1, borderRadius: 10, width: deviceWidth-10, }}>
-                <View style={{width:(7.3*(deviceWidth))/10}}><Text style={styles.factors}>{factors[0].name}</Text></View>
-                {/* <View style={{width:(7.3*(deviceWidth))/10}}><TextInput
+                <TouchableOpacity onPress={() => {editOrNotColor = color, setNewWeights()}}><View style={{backgroundColor: editOrNotColor, height: deviceHeightPart, width: deviceWidth/3, marginLeft: deviceWidth/3, justifyContent: 'center', alignText: 'center', alignItems: 'center', borderWidth: 1, borderRadius: 15}}><Text style={{color: colorOfText, shadowOpacity: 0.5}}>Save</Text></View></TouchableOpacity>
+                <View style={{height: deviceHeightPart*2, backgroundColor: sectionBackgroundColor, border: 'gray', marginTop: 5, justifyContent: 'flex-start', marginLeft: 5, flexDirection: 'row', alignItems: 'center', marginBottom: 5, borderWidth: 1, borderRadius: 10, width: deviceWidth-10, }}>
+                  <View style={{width:(7.3*(deviceWidth))/10}}><Text style={styles.factors}>{factors[0].name}</Text></View>
+                  {/* <View style={{width:(7.3*(deviceWidth))/10}}><TextInput
                     style={styles.factors}
                     keyboardAppearance='dark'
                     autoCorrect = {false}
@@ -948,224 +998,122 @@ export default function App() {
                     // placeholder={factorNames[0]}
                   /></View> */}
                   
-                  <View style={styles.topTaskbar}>
-                    <DropDownPicker
-                      open = {openS1}
-                      value = {valueS1}
-                      items = {itemsS1}
-                      setOpen = {setOpenS1}
-                      setValue = {setValueS1}
-                      setItems = {setItemsS1}
-
-                      onChangeValue={(changeValue) => {
-                        editOrNotColor = 'red';
-                      }}
-
-                      closeAfterSelecting = {true}
-                      showBadgeDot = {false}
-                      theme = "DARK"
-                      searchable = {false}
-                      mode = "BADGE"
-                      listMode="SCROLLVIEW"
-                      dropDownDirection="BOTTOM"
-
-                      style={{ width: deviceWidth/5, height: taskbarHeight/2, left: 0, top: 4, margin: 5}}/>
-                  </View>
+                  <TextInput
+                    style={S1Focus ? styles.focusedInputBox:styles.blurredInputBox}
+                    keyboardAppearance='dark'
+                    caretHidden={true}
+                    returnKeyType='done'
+                    onFocus={() => {setS1Focus(true)}}
+                    onBlur={() => {setS1Focus(false)}}
+                    keyboardType='number-pad'
+                    onChangeText={(valueS1) => {editOrNotColor = 'red', setValueS1(valueS1)}}
+                    value={valueS1}
+                  />
                 </View>
 
                 <View style={{height: deviceHeightPart*2, backgroundColor: sectionBackgroundColor, zIndex: -1, border: 'gray', justifyContent: 'right', marginLeft: 5, flexDirection: 'row', alignItems: 'center', marginBottom: 5, borderWidth: 1, borderRadius: 10, width: deviceWidth-10, }}>
                   <View style={{width:(7.3*(deviceWidth))/10}}><Text style={styles.factors}>{factors[1].name}</Text></View>
-                  
-                  <View style={styles.topTaskbar}>
-                    <DropDownPicker open = {openS2}
-                      value = {valueS2}
-                      items = {itemsS2}
-                      setOpen = {setOpenS2}
-                      setValue = {setValueS2}
-                      setItems = {setItemsS2}
-
-                      onChangeValue={(changeValue) => {
-                        editOrNotColor = 'red';
-                      }}
-
-                      closeAfterSelecting = {true}
-                      showBadgeDot = {false}
-                      theme = "DARK"
-                      searchable = {false}
-                      mode = "BADGE"
-                      listMode="SCROLLVIEW"
-                      dropDownDirection="BOTTOM"
-
-                      style={{ width: deviceWidth/5, height: taskbarHeight/2, left: 0, top: 4, margin: 5}}/>
-                  </View>
+                  <TextInput
+                    style={S2Focus ? styles.focusedInputBox:styles.blurredInputBox}
+                    keyboardAppearance='dark'
+                    caretHidden={true}
+                    returnKeyType='done'
+                    onFocus={() => {setS2Focus(true)}}
+                    onBlur={() => {setS2Focus(false)}}
+                    keyboardType='number-pad'
+                    onChangeText={(valueS2) => {editOrNotColor = 'red', setValueS2(valueS2)}}
+                    value={valueS2}
+                  />
                 </View>
               
                 <View style={{height: deviceHeightPart*2, backgroundColor: sectionBackgroundColor, zIndex: -2, border: 'gray', justifyContent: 'right', marginLeft: 5, flexDirection: 'row', alignItems: 'center', marginBottom: 5, borderWidth: 1, borderRadius: 10, width: deviceWidth-10, }}>
-                <View style={{width:(7.3*(deviceWidth))/10}}><Text style={styles.factors}>{factors[2].name}</Text></View>
-                  
-                  <View style={styles.topTaskbar}>
-                    <DropDownPicker
-                      open = {openS3}
-                      value = {valueS3}
-                      items = {itemsS3}
-                      setOpen = {setOpenS3}
-                      setValue = {setValueS3}
-                      setItems = {setItemsS3}
-
-                      onChangeValue={(changeValue) => {
-                        editOrNotColor = 'red';
-                      }}
-
-                      closeAfterSelecting = {true}
-                      showBadgeDot = {false}
-                      theme = "DARK"
-                      searchable = {false}
-                      mode = "BADGE"
-                      dropDownDirection="BOTTOM"
-                      listMode="SCROLLVIEW"
-
-                      style={{ width: deviceWidth/5, height: taskbarHeight/2, left: 0, top: 4, margin: 5}}/>
-                  </View>
+                  <View style={{width:(7.3*(deviceWidth))/10}}><Text style={styles.factors}>{factors[2].name}</Text></View>
+                  <TextInput
+                    style={S3Focus ? styles.focusedInputBox:styles.blurredInputBox}
+                    keyboardAppearance='dark'
+                    caretHidden={true}
+                    returnKeyType='done'
+                    onFocus={() => {setS3Focus(true)}}
+                    onBlur={() => {setS3Focus(false)}}
+                    keyboardType='number-pad'
+                    onChangeText={(valueS3) => {editOrNotColor = 'red', setValueS3(valueS3)}}
+                    value={valueS3}
+                  />
                 </View>
 
                 <View style={{height: deviceHeightPart*2, backgroundColor: sectionBackgroundColor, zIndex: -3, border: 'gray', justifyContent: 'right', marginLeft: 5, flexDirection: 'row', alignItems: 'center', marginBottom: 5, borderWidth: 1, borderRadius: 10, width: deviceWidth-10, }}>
-                <View style={{width:(7.3*(deviceWidth))/10}}><Text style={styles.factors}>{factors[3].name}</Text></View>
-                  
-                  <View style={styles.topTaskbar}>
-                    <DropDownPicker
-                      open = {openS4}
-                      value = {valueS4}
-                      items = {itemsS4}
-                      setOpen = {setOpenS4}
-                      setValue = {setValueS4}
-                      setItems = {setItemsS4}
-
-                      onChangeValue={(changeValue) => {
-                        editOrNotColor = 'red';
-                      }}
-
-                      closeAfterSelecting = {true}
-                      showBadgeDot = {false}
-                      theme = "DARK"
-                      searchable = {false}
-                      mode = "BADGE"
-                      dropDownDirection="BOTTOM"
-                      listMode="SCROLLVIEW"
-
-                      style={{ width: deviceWidth/5, height: taskbarHeight/2, left: 0, top: 4, margin: 5}}/>
-                  </View>
+                  <View style={{width:(7.3*(deviceWidth))/10}}><Text style={styles.factors}>{factors[3].name}</Text></View>
+                  <TextInput
+                    style={S4Focus ? styles.focusedInputBox:styles.blurredInputBox}
+                    keyboardAppearance='dark'
+                    caretHidden={true}
+                    returnKeyType='done'
+                    onFocus={() => {setS4Focus(true)}}
+                    onBlur={() => {setS4Focus(false)}}
+                    keyboardType='number-pad'
+                    onChangeText={(valueS4) => {editOrNotColor = 'red', setValueS4(valueS4)}}
+                    value={valueS4}
+                  />
                 </View>
 
                 <View style={{height: deviceHeightPart*2, backgroundColor: sectionBackgroundColor, zIndex: -4, border: 'gray', justifyContent: 'right', marginLeft: 5, flexDirection: 'row', alignItems: 'center', marginBottom: 5, borderWidth: 1, borderRadius: 10, width: deviceWidth-10, }}>
-                <View style={{width:(7.3*(deviceWidth))/10}}><Text style={styles.factors}>{factors[4].name}</Text></View>
-                  
-                  <View style={styles.topTaskbar}>
-                    <DropDownPicker
-                      open = {openS5}
-                      value = {valueS5}
-                      items = {itemsS5}
-                      setOpen = {setOpenS5}
-                      setValue = {setValueS5}
-                      setItems = {setItemsS5}
-
-                      onChangeValue={(changeValue) => {
-                        editOrNotColor = 'red';
-                      }}
-
-                      closeAfterSelecting = {true}
-                      showBadgeDot = {false}
-                      theme = "DARK"
-                      searchable = {false}
-                      mode = "BADGE"
-                      dropDownDirection="BOTTOM"
-                      listMode="SCROLLVIEW"
-
-                      style={{ width: deviceWidth/5, height: taskbarHeight/2, left: 0, top: 4, margin: 5}}/>
-                  </View>
+                  <View style={{width:(7.3*(deviceWidth))/10}}><Text style={styles.factors}>{factors[4].name}</Text></View>
+                  <TextInput
+                    style={S5Focus ? styles.focusedInputBox:styles.blurredInputBox}
+                    keyboardAppearance='dark'
+                    caretHidden={true}
+                    returnKeyType='done'
+                    onFocus={() => {setS5Focus(true)}}
+                    onBlur={() => {setS5Focus(false)}}
+                    keyboardType='number-pad'
+                    onChangeText={(valueS5) => {editOrNotColor = 'red', setValueS5(valueS5)}}
+                    value={valueS5}
+                  />
                 </View>
 
                 <View style={{height: deviceHeightPart*2, backgroundColor: sectionBackgroundColor, zIndex: -5, border: 'gray', justifyContent: 'right', marginLeft: 5, flexDirection: 'row', alignItems: 'center', marginBottom: 5, borderWidth: 1, borderRadius: 10, width: deviceWidth-10, }}>
-                <View style={{width:(7.3*(deviceWidth))/10}}><Text style={styles.factors}>{factors[5].name}</Text></View>
-                  
-                  <View style={styles.topTaskbar}>
-                    <DropDownPicker
-                      open = {openS6}
-                      value = {valueS6}
-                      items = {itemsS6}
-                      setOpen = {setOpenS6}
-                      setValue = {setValueS6}
-                      setItems = {setItemsS6}
-
-                      onChangeValue={(changeValue) => {
-                        editOrNotColor = 'red';
-                      }}
-
-                      closeAfterSelecting = {true}
-                      showBadgeDot = {false}
-                      theme = "DARK"
-                      searchable = {false}
-                      mode = "BADGE"
-                      listMode="SCROLLVIEW"
-                      dropDownDirection="BOTTOM"
-
-                      style={{ width: deviceWidth/5, height: taskbarHeight/2, left: 0, top: 4, margin: 5}}/>
-                  </View>
+                  <View style={{width:(7.3*(deviceWidth))/10}}><Text style={styles.factors}>{factors[5].name}</Text></View>
+                  <TextInput
+                    style={S6Focus ? styles.focusedInputBox:styles.blurredInputBox}
+                    keyboardAppearance='dark'
+                    caretHidden={true}
+                    returnKeyType='done'
+                    onFocus={() => {setS6Focus(true)}}
+                    onBlur={() => {setS6Focus(false)}}
+                    keyboardType='number-pad'
+                    onChangeText={(valueS6) => {editOrNotColor = 'red', setValueS6(valueS6)}}
+                    value={valueS6}
+                  />
                 </View>
 
                 <View style={{height: deviceHeightPart*2, backgroundColor: sectionBackgroundColor, zIndex: -6, border: 'gray', justifyContent: 'right', marginLeft: 5, flexDirection: 'row', alignItems: 'center', marginBottom: 5, borderWidth: 1, borderRadius: 10, width: deviceWidth-10, }}>
-                <View style={{width:(7.3*(deviceWidth))/10}}><Text style={styles.factors}>{factors[6].name}</Text></View>
-                  
-                  <View style={styles.topTaskbar}>
-                    <DropDownPicker
-                      open = {openS7}
-                      value = {valueS7}
-                      items = {itemsS7}
-                      setOpen = {setOpenS7}
-                      setValue = {setValueS7}
-                      setItems = {setItemsS7}
-
-                      onChangeValue={(changeValue) => {
-                        editOrNotColor = 'red';
-                      }}
-
-                      closeAfterSelecting = {true}
-                      showBadgeDot = {false}
-                      theme = "DARK"
-                      searchable = {false}
-                      mode = "BADGE"
-                      listMode="SCROLLVIEW"
-                      dropDownDirection="BOTTOM"
-
-                      style={{ width: deviceWidth/5, height: taskbarHeight/2, left: 0, top: 4, margin: 5}}/>
-                  </View>
+                  <View style={{width:(7.3*(deviceWidth))/10}}><Text style={styles.factors}>{factors[6].name}</Text></View>
+                  <TextInput
+                    style={S7Focus ? styles.focusedInputBox:styles.blurredInputBox}
+                    keyboardAppearance='dark'
+                    caretHidden={true}
+                    returnKeyType='done'
+                    onFocus={() => {setS7Focus(true)}}
+                    onBlur={() => {setS7Focus(false)}}
+                    keyboardType='number-pad'
+                    onChangeText={(valueS7) => {editOrNotColor = 'red', setValueS7(valueS7)}}
+                    value={valueS7}
+                  />
                 </View>
 
                 <View style={{height: deviceHeightPart*2, backgroundColor: sectionBackgroundColor, zIndex: -7, border: 'gray', justifyContent: 'right', marginLeft: 5, flexDirection: 'row', alignItems: 'center', marginBottom: 5, borderWidth: 1, borderRadius: 10, width: deviceWidth-10, }}>
-                <View style={{width:(7.3*(deviceWidth))/10}}><Text style={styles.factors}>{factors[7].name}</Text></View>
-                  
-                  <View style={styles.topTaskbar}>
-                    <DropDownPicker
-                      open = {openS8}
-                      value = {valueS8}
-                      items = {itemsS8}
-                      setOpen = {setOpenS8}
-                      setValue = {setValueS8}
-                      setItems = {setItemsS8}
-
-                      onChangeValue={(changeValue) => {
-                        editOrNotColor = 'red';
-                      }}
-
-                      closeAfterSelecting = {true}
-                      showBadgeDot = {false}
-                      theme = "DARK"
-                      searchable = {false}
-                      mode = "BADGE"
-                      listMode="SCROLLVIEW"
-                      dropDownDirection="BOTTOM"
-
-                      style={{ width: deviceWidth/5, height: taskbarHeight/2, left: 0, top: 4, margin: 5}}/>
-                  </View>
+                  <View style={{width:(7.3*(deviceWidth))/10}}><Text style={styles.factors}>{factors[7].name}</Text></View>
+                  <TextInput
+                    style={S8Focus ? styles.focusedInputBox:styles.blurredInputBox}
+                    keyboardAppearance='dark'
+                    caretHidden={true}
+                    returnKeyType='done'
+                    onFocus={() => {setS8Focus(true)}}
+                    onBlur={() => {setS8Focus(false)}}
+                    keyboardType='number-pad'
+                    onChangeText={(valueS8) => {editOrNotColor = 'red', setValueS8(valueS8)}}
+                    value={valueS8}
+                  />
                 </View>
                 {/* <TouchableOpacity style={{backgroundColor: 'red', height: deviceHeightPart, zIndex: -100}} onPress={() => {updateWeights(), console.log(weights)}}><Text>LOG WEIGHTS</Text></TouchableOpacity> */}
                 <View style={{zIndex: -100000, height: deviceHeightPart*20, justifyContent: 'flex-end',}}></View>
@@ -1182,6 +1130,7 @@ export default function App() {
                   <Image source={reloadIcon} style={{height: taskbarHeight, width: iconWidth}}/>
                 </TouchableOpacity>
               </View> */}
+              {Platform.OS === 'android' ? (<View style={{positon: 'relative', top: 0, left: 0, height: taskbarHeight*1.75, width: deviceWidth}}></View>):null}
               <View style={{shadowOffset: {width: 0, height: 5}, shadowOpacity: 0.5, marginBottom: 10, width: deviceWidth}}>
                 <View style={{backgroundColor: sectionBackgroundColor, justifyContent: 'space-between', display: 'flex', flexDirection: 'row', height: 42, width: deviceWidth-10, marginLeft: 5, borderWidth: 1, borderRadius: 5}}>
                   <Text style={{fontSize: 32, marginLeft: 3.5, paddingLeft: 4.5, color: colorOfTitleText, shadowOpacity: 0.5}}>College Name</Text>
@@ -1190,7 +1139,7 @@ export default function App() {
                   </View>
                 </View>
               </View>
-              <View style={{display:'flex', position:'absolute', left: (deviceWidth/2) - ((deviceWidth/8)/2), top: (deviceHeight)/8, zIndex: 10000, marginVertical: 10}}>
+              <View style={{display:'flex', position:'absolute', left: (deviceWidth/2) - ((deviceWidth/8)/2), top: Platform.OS === 'ios' ? (deviceHeight)/8:deviceHeight/4, zIndex: 10000, marginVertical: 10}}>
                 <ActivityIndicator
                   animating = {!ratingsLoaded}
                   size={deviceWidth/8}
@@ -1199,12 +1148,13 @@ export default function App() {
               </View>
               <FlatList 
                 data={FWT.slice()}
-                style={{display: 'flex'}}
+                style={{display: 'flex', height: deviceHeight}}
+                ListFooterComponent={<View style={{marginTop: 5, backgroundColor: color, zIndex: -100000, height: deviceHeightPart*10, justifyContent: 'flex-end'}}></View>}
                 renderItem={({ item, index }) => 
-                  <View style={{backgroundColor: sectionBackgroundColor, marginTop: 5, width: deviceWidth-10, marginLeft: 5, borderWidth: 1, borderRadius: 5}}>
+                  <View style={{backgroundColor: sectionBackgroundColor, height: Platform.OS === 'android' ? deviceHeightPart:null, marginTop: 5, width: deviceWidth-10, marginLeft: 5, borderWidth: 1, borderRadius: 5}}>
                     <Text style={{fontSize: 24, marginLeft: 3.5, paddingLeft: 4.5, color: colorOfText, shadowOpacity: 0.5}}>{FWT[index].name}</Text>
                     <View style={{alignItems: 'flex-end', marginTop: -26, marginRight: 5}}>
-                      <Text style={{fontSize: 24, marginLeft: 3.5, color: colorOfText, shadowOpacity: 0.5}}>
+                      <Text style={{fontSize: 24, marginLeft: 3.5, position: Platform.OS == 'android' ? 'relative':null, marginTop: Platform.OS == 'android' ? -6:null, color: colorOfText, shadowOpacity: 0.5}}>
                         {Math.round(FWT[index].value*100)/100}
                       </Text>
                     </View>
@@ -1219,7 +1169,9 @@ export default function App() {
                 }
                 // keyExtractor={(item) => item.key}
               />
+              <View style={{zIndex: -100000, height: deviceHeightPart*20, justifyContent: 'flex-end',}}></View>
               <View style={{height: 50}}></View>
+
               
             </>) : null}</View>
 
@@ -1237,227 +1189,123 @@ export default function App() {
                 <TouchableOpacity onPress={() => {setNewRatings()}} style={{paddingTop: 5}}><View style={{backgroundColor: editOrNotColor, height: deviceHeightPart, width: deviceWidth/3, marginLeft: deviceWidth/3, justifyContent: 'center', alignText: 'center', alignItems: 'center', borderWidth: 1, borderRadius: 15}}><Text style={{color: colorOfText, shadowOpacity: 0.5}}>Save</Text></View></TouchableOpacity>
                 <ScrollView style={{height: (deviceHeightPart*2)*16}}>
                   <View style={{height: deviceHeightPart*2, backgroundColor: sectionBackgroundColor, zIndex: -1, border: 'gray', marginTop: 5, justifyContent: 'right', marginLeft: 5, flexDirection: 'row', alignItems: 'center', marginBottom: 5, borderWidth: 1, borderRadius: 10, width: deviceWidth-10, }}>
-                  <View style={{width:(7.3*(deviceWidth))/10}}><Text style={styles.factors}>{factors[0].name}</Text></View>
-                    
-                    <View style={styles.topTaskbar}>
-                      <DropDownPicker
-                        open = {openM1}
-                        value = {valueM1}
-                        items = {itemsM1}
-                        setOpen = {setOpenM1}
-                        setValue = {setValueM1}
-                        setItems = {setItemsM1}
-
-                        onChangeValue={(changeValue) => {
-                          editOrNotColor = 'red';
-                        }}
-
-                        closeAfterSelecting = {true}
-                        // dropDownContainerStyle={{zIndex: -1}}
-                        showBadgeDot = {false}
-                        theme = "DARK"
-                        searchable = {false}
-                        mode = "BADGE"
-                        listMode="SCROLLVIEW"
-                        dropDownDirection="BOTTOM"
-
-                        style={{ width: deviceWidth/5, height: taskbarHeight/2, left: 0, top: 4, margin: 5}}/>
-                    </View>
+                    <View style={{width:(7.3*(deviceWidth))/10}}><Text style={styles.factors}>{factors[0].name}</Text></View>
+                    <TextInput
+                      style={M1Focus ? styles.focusedInputBox:styles.blurredInputBox}
+                      keyboardAppearance='dark'
+                      caretHidden={true}
+                      returnKeyType='done'
+                      onFocus={() => {setM1Focus(true)}}
+                      onBlur={() => {setM1Focus(false)}}
+                      keyboardType='number-pad'
+                      onChangeText={(valueM1) => {editOrNotColor = 'red', setValueM1(valueM1)}}
+                      value={valueM1}
+                    />
                   </View>
 
                   <View style={{height: deviceHeightPart*2, backgroundColor: sectionBackgroundColor, zIndex: -2, border: 'gray', justifyContent: 'right', marginLeft: 5, flexDirection: 'row', alignItems: 'center', marginBottom: 5, borderWidth: 1, borderRadius: 10, width: deviceWidth-10, }}>
                     <View style={{width:(7.3*(deviceWidth))/10}}><Text style={styles.factors}>{factors[1].name}</Text></View>
-                    
-                    <View style={styles.topTaskbar}>
-                      <DropDownPicker open = {openM2}
-                        value = {valueM2}
-                        items = {itemsM2}
-                        setOpen = {setOpenM2}
-                        setValue = {setValueM2}
-                        setItems = {setItemsM2}
-
-                        onChangeValue={(changeValue) => {
-                          editOrNotColor = 'red';
-                        }}
-
-                        closeAfterSelecting = {true}
-                        showBadgeDot = {false}
-                        theme = "DARK"
-                        searchable = {false}
-                        mode = "BADGE"
-                        listMode="SCROLLVIEW"
-                        dropDownDirection="BOTTOM"
-
-                        style={{ width: deviceWidth/5, height: taskbarHeight/2, left: 0, top: 4, margin: 5}}/>
-                    </View>
+                    <TextInput
+                      style={M2Focus ? styles.focusedInputBox:styles.blurredInputBox}
+                      keyboardAppearance='dark'
+                      caretHidden={true}
+                      returnKeyType='done'
+                      onFocus={() => {setM2Focus(true)}}
+                      onBlur={() => {setM2Focus(false)}}
+                      keyboardType='number-pad'
+                      onChangeText={(valueM2) => {editOrNotColor = 'red', setValueM2(valueM2)}}
+                      value={valueM2}
+                    />
                   </View>
                 
                   <View style={{height: deviceHeightPart*2, backgroundColor: sectionBackgroundColor, zIndex: -3, border: 'gray', justifyContent: 'right', marginLeft: 5, flexDirection: 'row', alignItems: 'center', marginBottom: 5, borderWidth: 1, borderRadius: 10, width: deviceWidth-10, }}>
-                  <View style={{width:(7.3*(deviceWidth))/10}}><Text style={styles.factors}>{factors[2].name}</Text></View>
-                    
-                    <View style={styles.topTaskbar}>
-                      <DropDownPicker
-                        open = {openM3}
-                        value = {valueM3}
-                        items = {itemsM3}
-                        setOpen = {setOpenM3}
-                        setValue = {setValueM3}
-                        setItems = {setItemsM3}
-
-                        onChangeValue={(changeValue) => {
-                          editOrNotColor = 'red';
-                        }}
-
-                        closeAfterSelecting = {true}
-                        showBadgeDot = {false}
-                        theme = "DARK"
-                        searchable = {false}
-                        mode = "BADGE"
-                        listMode="SCROLLVIEW"
-                        dropDownDirection="BOTTOM"
-
-                        style={{ width: deviceWidth/5, height: taskbarHeight/2, left: 0, top: 4, margin: 5}}/>
-                    </View>
+                    <View style={{width:(7.3*(deviceWidth))/10}}><Text style={styles.factors}>{factors[2].name}</Text></View>
+                    <TextInput
+                      style={M3Focus ? styles.focusedInputBox:styles.blurredInputBox}
+                      keyboardAppearance='dark'
+                      caretHidden={true}
+                      returnKeyType='done'
+                      onFocus={() => {setM3Focus(true)}}
+                      onBlur={() => {setM3Focus(false)}}
+                      keyboardType='number-pad'
+                      onChangeText={(valueM3) => {editOrNotColor = 'red', setValueM3(valueM3)}}
+                      value={valueM3}
+                    />
                   </View>
 
                   <View style={{height: deviceHeightPart*2, backgroundColor: sectionBackgroundColor, zIndex: -4, border: 'gray', justifyContent: 'right', marginLeft: 5, flexDirection: 'row', alignItems: 'center', marginBottom: 5, borderWidth: 1, borderRadius: 10, width: deviceWidth-10, }}>
-                  <View style={{width:(7.3*(deviceWidth))/10}}><Text style={styles.factors}>{factors[3].name}</Text></View>
-                    
-                    <View style={styles.topTaskbar}>
-                      <DropDownPicker
-                        open = {openM4}
-                        value = {valueM4}
-                        items = {itemsM4}
-                        setOpen = {setOpenM4}
-                        setValue = {setValueM4}
-                        setItems = {setItemsM4}
-
-                        onChangeValue={(changeValue) => {
-                          editOrNotColor = 'red';
-                        }}
-
-                        closeAfterSelecting = {true}
-                        showBadgeDot = {false}
-                        theme = "DARK"
-                        searchable = {false}
-                        mode = "BADGE"
-                        listMode="SCROLLVIEW"
-                        dropDownDirection="BOTTOM"
-
-                        style={{ width: deviceWidth/5, height: taskbarHeight/2, left: 0, top: 4, margin: 5}}/>
-                    </View>
+                    <View style={{width:(7.3*(deviceWidth))/10}}><Text style={styles.factors}>{factors[3].name}</Text></View>
+                    <TextInput
+                      style={M4Focus ? styles.focusedInputBox:styles.blurredInputBox}
+                      keyboardAppearance='dark'
+                      caretHidden={true}
+                      returnKeyType='done'
+                      onFocus={() => {setM4Focus(true)}}
+                      onBlur={() => {setM4Focus(false)}}
+                      keyboardType='number-pad'
+                      onChangeText={(valueM4) => {editOrNotColor = 'red', setValueM4(valueM4)}}
+                      value={valueM4}
+                    />
                   </View>
 
                   <View style={{height: deviceHeightPart*2, backgroundColor: sectionBackgroundColor, zIndex: -5, border: 'gray', justifyContent: 'right', marginLeft: 5, flexDirection: 'row', alignItems: 'center', marginBottom: 5, borderWidth: 1, borderRadius: 10, width: deviceWidth-10, }}>
-                  <View style={{width:(7.3*(deviceWidth))/10}}><Text style={styles.factors}>{factors[4].name}</Text></View>
-                    
-                    <View style={styles.topTaskbar}>
-                      <DropDownPicker
-                        open = {openM5}
-                        value = {valueM5}
-                        items = {itemsM5}
-                        setOpen = {setOpenM5}
-                        setValue = {setValueM5}
-                        setItems = {setItemsM5}
-
-                        onChangeValue={(changeValue) => {
-                          editOrNotColor = 'red';
-                        }}
-
-                        closeAfterSelecting = {true}
-                        showBadgeDot = {false}
-                        theme = "DARK"
-                        searchable = {false}
-                        mode = "BADGE"
-                        listMode="SCROLLVIEW"
-                        dropDownDirection="BOTTOM"
-
-                        style={{ width: deviceWidth/5, height: taskbarHeight/2, left: 0, top: 4, margin: 5}}/>
-                    </View>
+                    <View style={{width:(7.3*(deviceWidth))/10}}><Text style={styles.factors}>{factors[4].name}</Text></View>
+                    <TextInput
+                      style={M5Focus ? styles.focusedInputBox:styles.blurredInputBox}
+                      keyboardAppearance='dark'
+                      caretHidden={true}
+                      returnKeyType='done'
+                      onFocus={() => {setM5Focus(true)}}
+                      onBlur={() => {setM5Focus(false)}}
+                      keyboardType='number-pad'
+                      onChangeText={(valueM5) => {editOrNotColor = 'red', setValueM5(valueM5)}}
+                      value={valueM5}
+                    />
                   </View>
 
                   <View style={{height: deviceHeightPart*2, backgroundColor: sectionBackgroundColor, zIndex: -6, border: 'gray', justifyContent: 'right', marginLeft: 5, flexDirection: 'row', alignItems: 'center', marginBottom: 5, borderWidth: 1, borderRadius: 10, width: deviceWidth-10, }}>
-                  <View style={{width:(7.3*(deviceWidth))/10}}><Text style={styles.factors}>{factors[5].name}</Text></View>
-                    
-                    <View style={styles.topTaskbar}>
-                      <DropDownPicker
-                        open = {openM6}
-                        value = {valueM6}
-                        items = {itemsM6}
-                        setOpen = {setOpenM6}
-                        setValue = {setValueM6}
-                        setItems = {setItemsM6}
-
-                        onChangeValue={(changeValue) => {
-                          editOrNotColor = 'red';
-                        }}
-
-                        closeAfterSelecting = {true}
-                        showBadgeDot = {false}
-                        theme = "DARK"
-                        searchable = {false}
-                        mode = "BADGE"
-                        listMode="SCROLLVIEW"
-                        dropDownDirection="BOTTOM"
-
-                        style={{ width: deviceWidth/5, height: taskbarHeight/2, left: 0, top: 4, margin: 5}}/>
-                    </View>
+                    <View style={{width:(7.3*(deviceWidth))/10}}><Text style={styles.factors}>{factors[5].name}</Text></View>
+                    <TextInput
+                      style={M6Focus ? styles.focusedInputBox:styles.blurredInputBox}
+                      keyboardAppearance='dark'
+                      caretHidden={true}
+                      returnKeyType='done'
+                      onFocus={() => {setM6Focus(true)}}
+                      onBlur={() => {setM6Focus(false)}}
+                      keyboardType='number-pad'
+                      onChangeText={(valueM6) => {editOrNotColor = 'red', setValueM6(valueM6)}}
+                      value={valueM6}
+                    />
                   </View>
 
                   <View style={{height: deviceHeightPart*2, backgroundColor: sectionBackgroundColor, zIndex: -7, border: 'gray', justifyContent: 'right', marginLeft: 5, flexDirection: 'row', alignItems: 'center', marginBottom: 5, borderWidth: 1, borderRadius: 10, width: deviceWidth-10, }}>
-                  <View style={{width:(7.3*(deviceWidth))/10}}><Text style={styles.factors}>{factors[6].name}</Text></View>
-                    
-                    <View style={styles.topTaskbar}>
-                      <DropDownPicker
-                        open = {openM7}
-                        value = {valueM7}
-                        items = {itemsM7}
-                        setOpen = {setOpenM7}
-                        setValue = {setValueM7}
-                        setItems = {setItemsM7}
-
-                        onChangeValue={(changeValue) => {
-                          editOrNotColor = 'red';
-                        }}
-
-                        closeAfterSelecting = {true}
-                        showBadgeDot = {false}
-                        theme = "DARK"
-                        searchable = {false}
-                        mode = "BADGE"
-                        listMode="SCROLLVIEW"
-                        dropDownDirection="BOTTOM"
-
-                        style={{ width: deviceWidth/5, height: taskbarHeight/2, left: 0, top: 4, margin: 5}}/>
-                    </View>
+                    <View style={{width:(7.3*(deviceWidth))/10}}><Text style={styles.factors}>{factors[6].name}</Text></View>
+                    <TextInput
+                      style={M7Focus ? styles.focusedInputBox:styles.blurredInputBox}
+                      keyboardAppearance='dark'
+                      caretHidden={true}
+                      returnKeyType='done'
+                      onFocus={() => {setM7Focus(true)}}
+                      onBlur={() => {setM7Focus(false)}}
+                      keyboardType='number-pad'
+                      onChangeText={(valueM7) => {editOrNotColor = 'red', setValueM7(valueM7)}}
+                      value={valueM7}
+                    />
                   </View>
 
                   <View style={{height: deviceHeightPart*2, backgroundColor: sectionBackgroundColor, zIndex: -8, border: 'gray', justifyContent: 'right', marginLeft: 5, flexDirection: 'row', alignItems: 'center', marginBottom: 5, borderWidth: 1, borderRadius: 10, width: deviceWidth-10, }}>
-                  <View style={{width:(7.3*(deviceWidth))/10}}><Text style={styles.factors}>{factors[7].name}</Text></View>
-                    
-                    <View style={styles.topTaskbar}>
-                      <DropDownPicker
-                        open = {openM8}
-                        value = {valueM8}
-                        items = {itemsM8}
-                        setOpen = {setOpenM8}
-                        setValue = {setValueM8}
-                        setItems = {setItemsM8}
-
-                        onChangeValue={(changeValue) => {
-                          editOrNotColor = 'red';
-                        }}
-
-                        closeAfterSelecting = {true}
-                        showBadgeDot = {false}
-                        theme = "DARK"
-                        searchable = {false}
-                        mode = "BADGE"
-                        listMode="SCROLLVIEW"
-                        dropDownDirection="BOTTOM"
-
-                        style={{ width: deviceWidth/5, height: taskbarHeight/2, left: 0, top: 4, margin: 5}}/>
-                    </View>
+                    <View style={{width:(7.3*(deviceWidth))/10}}><Text style={styles.factors}>{factors[7].name}</Text></View>
+                    <TextInput
+                      style={M8Focus ? styles.focusedInputBox:styles.blurredInputBox}
+                      keyboardAppearance='dark'
+                      caretHidden={true}
+                      returnKeyType='done'
+                      onFocus={() => {setM8Focus(true)}}
+                      onBlur={() => {setM8Focus(false)}}
+                      keyboardType='number-pad'
+                      onChangeText={(valueM8) => {editOrNotColor = 'red', setValueM8(valueM8)}}
+                      value={valueM8}
+                    />
                   </View>
                   <View style={{zIndex: -100000, width: '100%', justifyContent: 'center', alignItems: 'center',}}>
                   <TextInput
@@ -1481,7 +1329,7 @@ export default function App() {
                     autoCorrect = {true}
                     autoCapitalize = 'sentences'
                     // onChangeText={setGenNotes}
-                    onChangeText={(genNotes) => {editOrNotColor = 'red'; setGenNotes(genNotes)}}
+                    onChangeText={(genNotes) => {editOrNotColor = 'red'; genNotes === "" ? setGenNotes(" "):setGenNotes(genNotes)}}
                     value={genNotes}
                   /></View>
                   {/* <TextInput //TESTING NUMERIC WHATNOT STUFF YOU SHOULD KNOW IF YOU DON'T WELL TOO BAD FOR MYSELF
@@ -1516,7 +1364,7 @@ export default function App() {
           </View>
  
          
-        </SafeAreaView>
+        </SafeAreaView>{/*): null}*/}
         </>) : null}</View>
 
 
@@ -1548,6 +1396,40 @@ const styles = StyleSheet.create({
     backgroundColor: color,
     // alignItems: 'center',
   },
+  blurredInputBox: {
+    borderWidth: 1,
+    borderRadius: 10,
+    height: taskbarHeight,
+    width: taskbarHeight,
+    position: 'relative',
+    left: taskbarHeight/1.7,
+    top: 0,
+    padding: 5,
+    textAlign: 'center',
+    justifyContent: 'top',
+    alignItems: 'right',
+    color: numberInputTextColor,
+    fontSize: taskbarHeight/3,
+    backgroundColor: numberInputBoxBgColor,
+    zIndex: 100,
+  },
+  focusedInputBox: {
+    borderWidth: 1,
+    borderRadius: 10,
+    height: taskbarHeight,
+    width: taskbarHeight,
+    position: 'relative',
+    left: taskbarHeight/1.7,
+    top: 0,
+    padding: 5,
+    textAlign: 'center',
+    justifyContent: 'top',
+    alignItems: 'right',
+    color: numberInputTextColor,
+    fontSize: taskbarHeight/3,
+    backgroundColor: "#363c52",
+    zIndex: 100,
+  },
   colleges: {
     position: 'absolute',
     top: deviceHeight/4,
@@ -1561,11 +1443,12 @@ const styles = StyleSheet.create({
   },
   topMargin: {
     backgroundColor: color,
+    // backgroundColor: 'purple',
     height: 34,
     width: deviceWidth,
-    position: 'relative',
+    position: Platform.OS === 'ios' ? 'relative':'absolute',
     left: 0,
-    top: 0,
+    top: Platform.OS === 'ios' ? 0 :deviceHeightPart*1.5,
     justifyContent: 'bottom',
     alignItems: 'center',
     fontSize: 24,
@@ -1575,7 +1458,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 1, height: 1 },
     shadowOpacity:  0.7,
     shadowRadius: 3,
-    elevation: 5,
+    elevation: Platform.OS === 'ios' ? 5:10,
   },
   topTaskbar: {
     // flex: 1,
