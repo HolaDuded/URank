@@ -382,25 +382,38 @@ export default function App() {
       Alert.alert('Invalid College Name');
       return
     }
+    else if (valueR == ""){
+      return
+    }
+    else if (valueT.findIndex(e => e.value == valueR) != -1){
+      Alert.alert('College Already Exists');
+      setText('');
+      return
+    }
     await addCollege(text, valueR);
     setText('');
+    // Alert.alert('College Successfully Added');
+    // setModalVisible(!modalVisible);
+
+
+
+    // await updateColleges('collegeList')
+    // setColleges(valueT)
+    // // onCollegesValueChange(valueR);
+    // onCollegesValueChange('select');
+    // valueMenuValueChange('home');
+    // // // console.log("\n\n\n\n\n\n\ntext: "+text+"\nvalueR:"+valueR+"\n"+colleges+"\n"+colleges[colleges.length - 1]+"\n\n\n\n\n")
+    // // // console.log(str(colleges))
+    // // // console.log(valueR)
+    // // // new Promise(resolve => setTimeout(resolve, 1000)).then(setValue(valueR))
+    // console.log('promise started');
+    // await new Promise(resolve => setTimeout(resolve, 2000))//.then(setValue(valueR)).then(console.log('PROMISE RESOLVED'))
+    // console.log('PROMISE RESOLVED');
+    // console.log(valueR);
+    // console.log(colleges);
+    // setValue(valueR);
+    Alert.alert('College Successfully Added');
     setModalVisible(!modalVisible);
-
-
-
-    await updateColleges('collegeList')
-    setColleges(valueT)
-    onCollegesValueChange(valueR);
-    // // console.log("\n\n\n\n\n\n\ntext: "+text+"\nvalueR:"+valueR+"\n"+colleges+"\n"+colleges[colleges.length - 1]+"\n\n\n\n\n")
-    // // console.log(str(colleges))
-    // // console.log(valueR)
-    // // new Promise(resolve => setTimeout(resolve, 1000)).then(setValue(valueR))
-    console.log('promise started');
-    await new Promise(resolve => setTimeout(resolve, 2000))//.then(setValue(valueR)).then(console.log('PROMISE RESOLVED'))
-    console.log('PROMISE RESOLVED');
-    console.log(valueR);
-    console.log(colleges);
-    setValue(valueR);
   };
 
   let addCollegeModal = () => {
@@ -565,7 +578,7 @@ export default function App() {
       let dummyWT = [];
       let len = slicedRatingsTotals.length;
       for (let i = 0; i < len; i = i + 1){
-        dummyWT.push({name: valueT[i + 1].label, value:slicedRatingsTotals[i]})
+        dummyWT.push({name: valueT[i + 1].label, value: slicedRatingsTotals[i]})
       }
       let dummyT = dummyWT;
       let dummyTLen = dummyT.length;

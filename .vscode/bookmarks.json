@@ -34,42 +34,42 @@
 					"label": "addCollegeSubmitButton"
 				},
 				{
-					"line": 528,
+					"line": 541,
 					"column": 0,
 					"label": "valueMenuValueChange"
 				},
 				{
-					"line": 607,
+					"line": 620,
 					"column": 0,
 					"label": "Image Definitions"
 				},
 				{
-					"line": 796,
+					"line": 809,
 					"column": 38,
 					"label": "College Selector"
 				},
 				{
-					"line": 891,
+					"line": 904,
 					"column": 0,
 					"label": "Dev Menu"
 				},
 				{
-					"line": 919,
+					"line": 932,
 					"column": 20,
 					"label": "Delete Menu"
 				},
 				{
-					"line": 980,
+					"line": 993,
 					"column": 14,
 					"label": "Ratings on Settings"
 				},
 				{
-					"line": 1123,
+					"line": 1136,
 					"column": 0,
 					"label": "College Ranking Page"
 				},
 				{
-					"line": 1178,
+					"line": 1191,
 					"column": 0,
 					"label": "College Rating"
 				}
