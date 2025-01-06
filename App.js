@@ -52,6 +52,7 @@ let indexM = '';
 
 let slicedRatingsTotals = [];
 let FWT = [];
+let names = [];
 let ratingsLoaded = false;
 
 SplashScreen.preventAutoHideAsync();
@@ -78,6 +79,7 @@ export default function App() {
         console.log('Simulating menuValue change');
         await valueMenuValueChange('myColleges');
         await valueMenuValueChange('settings');
+        await valueMenuValueChange('home');
         console.log('Simulated menuValue change');
         await SplashScreen.hideAsync();
       }
@@ -327,7 +329,6 @@ export default function App() {
       const pasredJSONValue = JSON.parse(jsonValue);
       if (pasredJSONValue!=null){
         setValueT(pasredJSONValue)
-        
       }
     } catch (e) {
       console.log('updateCollegesError - ')
@@ -337,10 +338,10 @@ export default function App() {
   
 
 
-  useEffect(() => {
-    // setViewedWeights()
-    updateColleges()
-  }, [valueT]);
+  // useEffect(() => { // We'll see if this is needed
+  //   // setViewedWeights()
+  //   updateColleges()
+  // }, [valueT]);
 
   const [factors, setFactors] = useState(initFactors)
   const [colleges, setColleges] = useState(valueT)
@@ -564,11 +565,6 @@ export default function App() {
 
   let valueMenuValueChange = async (value) => {
     if (value == 'myColleges'){
-      // console.log("");
-      // console.log("");
-      // console.log("College Changed");
-      // console.log("");
-      // console.log("");
       ratingsLoaded = false;
       for (let i = 1; i < valueT.length; i = i + 1){
         getRating(valueT[i].ratingKey)
@@ -578,7 +574,8 @@ export default function App() {
       let dummyWT = [];
       let len = slicedRatingsTotals.length;
       for (let i = 0; i < len; i = i + 1){
-        dummyWT.push({name: valueT[i + 1].label, value: slicedRatingsTotals[i]})
+        dummyWT.push({name: valueT[i + 1].label, value: slicedRatingsTotals[i]});
+        names.push({name: valueT[i + 1].label});
       }
       let dummyT = dummyWT;
       let dummyTLen = dummyT.length;
@@ -588,27 +585,18 @@ export default function App() {
         dummyT.splice(dummyT.indexOf(max(dummyT)), 1);
       }
       FWT = newRT;
-      // console.log("");
-      // console.log("");
-      console.log("FWR Generated");
-      // console.log(FWT);
-      // console.log("");
-      // console.log("");
+      console.log("FWR GENERATED");
       ratingsLoaded = true;
     }
     else if (value == 'settings'){
-      // console.log("");
-      // console.log("");
-      // console.log("WEIGHTING NOW");
-      // console.log("");
-      // console.log("");
       setViewedWeights()
       await new Promise(resolve => setTimeout(resolve, 3000));
-      // console.log("");
-      // console.log("");
       console.log("WEIGHTING COMPLETE");
-      // console.log("");
-      // console.log("");
+    }
+    else if (value == 'home'){
+      await updateColleges('collegeList')
+      await new Promise(resolve => setTimeout(resolve, 3000));
+      console.log("COLLEGE LIST UPDATED");
     }
   }
 
@@ -995,22 +983,9 @@ export default function App() {
               {Platform.OS == 'android' ? (<View style={{positon: 'relative', top: 0, left: 0, height: taskbarHeight*1.75, width: deviceWidth}}></View>):null}
 
               <ScrollView style={{height: (deviceHeight)}}>
-                <TouchableOpacity onPress={() => {editOrNotColor = color, setNewWeights()}}><View style={{backgroundColor: editOrNotColor, height: deviceHeightPart, width: deviceWidth/3, marginLeft: deviceWidth/3, justifyContent: 'center', alignText: 'center', alignItems: 'center', borderWidth: 1, borderRadius: 15}}><Text style={{color: colorOfText, shadowOpacity: 0.5}}>Save</Text></View></TouchableOpacity>
+                <TouchableOpacity onPress={() => {editOrNotColor = littleSection, setNewWeights()}}><View style={{backgroundColor: editOrNotColor, height: deviceHeightPart, width: deviceWidth/3, marginLeft: deviceWidth/3, justifyContent: 'center', alignText: 'center', alignItems: 'center', borderWidth: 1, borderRadius: 15}}><Text style={{color: colorOfText, shadowOpacity: 0.5}}>Save</Text></View></TouchableOpacity>
                 <View style={{height: deviceHeightPart*2, backgroundColor: sectionBackgroundColor, border: 'gray', marginTop: 5, justifyContent: 'flex-start', marginLeft: 5, flexDirection: 'row', alignItems: 'center', marginBottom: 5, borderWidth: 1, borderRadius: 10, width: deviceWidth-10, }}>
                   <View style={{width:(7.3*(deviceWidth))/10}}><Text style={styles.factors}>{factors[0].name}</Text></View>
-                  {/* <View style={{width:(7.3*(deviceWidth))/10}}><TextInput
-                    style={styles.factors}
-                    keyboardAppearance='dark'
-                    autoCorrect = {false}
-                    autoCapitalize = 'words'
-                    onChangeText={recreateFactors(factors[0].name, '0')}
-                    // value={factors[0].name}
-                    placeholder={factors[0].name}
-                    // onChangeText={recreateFactorNames(factorNames[0], '0')}
-                    // // value={factors[0].name}
-                    // placeholder={factorNames[0]}
-                  /></View> */}
-                  
                   <TextInput
                     style={S1Focus ? styles.focusedInputBox:styles.blurredInputBox}
                     keyboardAppearance='dark'
@@ -1193,6 +1168,21 @@ export default function App() {
 {/*////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/}
 
             <View>{valueMenu=='home' ? (<>
+              <View style={{}}>{value=='select' ? (<>
+                <FlatList 
+                  data={names.slice()}
+                  style={{display: 'flex', height: deviceHeight}}
+                  ListFooterComponent={<View style={{marginTop: 5, backgroundColor: color, zIndex: -100000, height: deviceHeightPart*10, justifyContent: 'flex-end'}}></View>}
+                  renderItem={({ item, index }) => 
+                    <View style={{backgroundColor: sectionBackgroundColor, height: deviceHeightPart, marginTop: 5, width: deviceWidth-10, marginLeft: 5, borderWidth: 1, borderRadius: 5}}>
+                      <Text style={{fontSize: 24, left: deviceWidth/2, color: colorOfText, shadowOpacity: 0.5}}>{names[index].name}</Text>
+                    </View>
+                  }
+                />
+                <View style={{zIndex: -100000, height: deviceHeightPart*20, justifyContent: 'flex-end',}}></View>
+                {/* <View style={{height: 50, width: deviceWidth, position: 'absolute', bottom: 0}}><TouchableOpacity onPress={() => {console.log(valueT.slice(1))}}><View style={{height: 50}}><Text style={{fontSize: 18}}>LOG THINGS</Text></View></TouchableOpacity></View> */}
+                <View style={{height: 50}}></View>
+              </>):null}</View>
               <View style={{}}>{value!='select' ? (<>
 
                 <View style={{height: deviceHeightPart*2, backgroundColor: littleSection, zIndex: -1, border: 'gray', marginTop: 5, justifyContent: 'center', marginLeft: 5, flexDirection: 'row', alignItems: 'center', marginBottom: 5, borderWidth: 1, borderRadius: 15, width: deviceWidth-10, }}>
@@ -1345,26 +1335,6 @@ export default function App() {
                     onChangeText={(genNotes) => {editOrNotColor = 'red'; genNotes === "" ? setGenNotes(" "):setGenNotes(genNotes)}}
                     value={genNotes}
                   /></View>
-                  {/* <TextInput //TESTING NUMERIC WHATNOT STUFF YOU SHOULD KNOW IF YOU DON'T WELL TOO BAD FOR MYSELF
-                    style={{
-                      borderWidth: 1,
-                      borderRadius: 10,
-                      // height: '20%',
-                      height: 200,
-                      width: deviceWidth - 10,
-                      padding: 5,
-                      // bottom: '2%',
-                      textAlign: 'top',
-                      justifyContent: 'top',
-                      alignItems: 'left',
-                      color: 'black',
-                      backgroundColor: 'white',
-                    }}
-                    keyboardAppearance='dark'
-                    keyboardType='numeric'
-                    placeholder='General College Notes'
-                    value={genNotes}
-                  />    */}
                   {/* <TouchableHighlight onPress={() => setFactors(initFactors)}><Text>RESET FACTORS</Text></TouchableHighlight> */}
                   {/*<TouchableOpacity onPress={() => {setNewRatings()}} style={{paddingTop: 5}}><View style={{backgroundColor: littleSection, height: deviceHeightPart, width: deviceWidth/3, marginLeft: deviceWidth/3, justifyContent: 'center', alignText: 'center', alignItems: 'center', borderWidth: 1, borderRadius: 15}}><Text style={{color: colorOfText, shadowOpacity: 0.5}}>Save</Text></View></TouchableOpacity>*/}
                   <View style={{zIndex: -100000, height: deviceHeightPart*25, justifyContent: 'flex-end',}}></View>

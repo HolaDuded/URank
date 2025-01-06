@@ -9,67 +9,67 @@
 					"label": "Variables"
 				},
 				{
-					"line": 85,
+					"line": 87,
 					"column": 1,
 					"label": "INLOG Changelog"
 				},
 				{
-					"line": 115,
+					"line": 117,
 					"column": 0,
 					"label": "const variables"
 				},
 				{
-					"line": 197,
+					"line": 199,
 					"column": 0,
 					"label": "getRating func"
 				},
 				{
-					"line": 279,
+					"line": 281,
 					"column": 0,
 					"label": "Functions"
 				},
 				{
-					"line": 378,
+					"line": 379,
 					"column": 0,
 					"label": "addCollegeSubmitButton"
 				},
 				{
-					"line": 541,
+					"line": 542,
 					"column": 0,
 					"label": "valueMenuValueChange"
 				},
 				{
-					"line": 620,
+					"line": 608,
 					"column": 0,
 					"label": "Image Definitions"
 				},
 				{
-					"line": 809,
+					"line": 797,
 					"column": 38,
 					"label": "College Selector"
 				},
 				{
-					"line": 904,
+					"line": 892,
 					"column": 0,
 					"label": "Dev Menu"
 				},
 				{
-					"line": 932,
+					"line": 920,
 					"column": 20,
 					"label": "Delete Menu"
 				},
 				{
-					"line": 993,
+					"line": 981,
 					"column": 14,
 					"label": "Ratings on Settings"
 				},
 				{
-					"line": 1136,
+					"line": 1111,
 					"column": 0,
 					"label": "College Ranking Page"
 				},
 				{
-					"line": 1191,
+					"line": 1166,
 					"column": 0,
 					"label": "College Rating"
 				}
