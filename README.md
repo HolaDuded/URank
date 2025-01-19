@@ -25,7 +25,7 @@ If you want to join the community Discord server to connect, get help, or just t
 ## FAQ
 **Q:** What do you mean Original Group Members?
 
-**A:** This app was originally developed for the Congressional App Challenge, primarily by **Zander**, in a group with the rest of the original group members.  After we had finished the App Challenge, the app had potential, so **Zander** started over and redesigned the app to contain more features and run better.
+**A:** This app was originally developed by **Zander** for the Congressional App Challenge in a group with the rest of the original group members.  After we had finished the App Challenge, the app had potential, so **Zander** started over and redesigned the app to contain more features and run better.
 
 
 **Q:** How do I use this app?
