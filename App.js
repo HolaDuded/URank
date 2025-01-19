@@ -70,10 +70,10 @@ export default function App() {
         splashed = true;
       }
       if (vered == false){
-        console.log('VERSION 0.4.0');
+        console.log('VERSION 0.4.1');
         console.log();
-        console.log('- Numerical inputs added');
-        console.log('- Simulate menuValue changes');
+        console.log('- Fixed ranked page not appearing');
+        console.log('- ');
         console.log();
         vered = true;
         console.log('Simulating menuValue change');
@@ -566,6 +566,7 @@ export default function App() {
   let valueMenuValueChange = async (value) => {
     if (value == 'myColleges'){
       ratingsLoaded = false;
+      setLoadModalOpen(true);
       for (let i = 1; i < valueT.length; i = i + 1){
         getRating(valueT[i].ratingKey)
       }
@@ -586,6 +587,8 @@ export default function App() {
       }
       FWT = newRT;
       console.log("FWR GENERATED");
+      setLoadModalOpen(true);
+      delay(100).then(() => {setLoadModalOpen(false);});
       ratingsLoaded = true;
     }
     else if (value == 'settings'){
@@ -663,6 +666,8 @@ export default function App() {
     // {label: 'Dev Menu', value: 'devMenu', icon: () => <Image source={settingsWhite} style={{height: 25, width: 25}} />},
     
   ]);
+
+  const [loadModalOpen, setLoadModalOpen] = useState(false);
   
   const [openS1, setOpenS1] = useState(false);
   const [valueS1, setValueS1] = useState(0)
@@ -1128,11 +1133,19 @@ export default function App() {
                 </View>
               </View>
               <View style={{display:'flex', position:'absolute', left: (deviceWidth/2) - ((deviceWidth/8)/2), top: Platform.OS === 'ios' ? (deviceHeight)/8:deviceHeight/4, zIndex: 10000, marginVertical: 10}}>
-                <ActivityIndicator
-                  animating = {!ratingsLoaded}
-                  size={deviceWidth/8}
-                  color = {MD2Colors.grey500}
-                />
+                <Modal
+                  transparent={true}
+                  visible={loadModalOpen}
+                  animationType='fade'
+                  style={{height: deviceHeight/2, width: deviceWidth, top: deviceHeight/2}}
+                >
+                  <ActivityIndicator
+                    animating = {!ratingsLoaded}
+                    size={deviceWidth/8}
+                    color = {MD2Colors.grey500}
+                    style={{height: deviceWidth/2, width: deviceWidth, top: deviceHeight/5, left: 0}}
+                  />
+                </Modal>
               </View>
               <FlatList 
                 data={FWT.slice()}
@@ -1169,7 +1182,7 @@ export default function App() {
 
             <View>{valueMenu=='home' ? (<>
               <View style={{}}>{value=='select' ? (<>
-                <FlatList 
+                {/*<FlatList 
                   data={names.slice()}
                   style={{display: 'flex', height: deviceHeight}}
                   ListFooterComponent={<View style={{marginTop: 5, backgroundColor: color, zIndex: -100000, height: deviceHeightPart*10, justifyContent: 'flex-end'}}></View>}
@@ -1180,8 +1193,8 @@ export default function App() {
                   }
                 />
                 <View style={{zIndex: -100000, height: deviceHeightPart*20, justifyContent: 'flex-end',}}></View>
-                {/* <View style={{height: 50, width: deviceWidth, position: 'absolute', bottom: 0}}><TouchableOpacity onPress={() => {console.log(valueT.slice(1))}}><View style={{height: 50}}><Text style={{fontSize: 18}}>LOG THINGS</Text></View></TouchableOpacity></View> */}
-                <View style={{height: 50}}></View>
+                {/* <View style={{height: 50, width: deviceWidth, position: 'absolute', bottom: 0}}><TouchableOpacity onPress={() => {console.log(valueT.slice(1))}}><View style={{height: 50}}><Text style={{fontSize: 18}}>LOG THINGS</Text></View></TouchableOpacity></View> 
+                <View style={{height: 50}}></View> */}
               </>):null}</View>
               <View style={{}}>{value!='select' ? (<>
 
