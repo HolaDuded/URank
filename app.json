@@ -21,10 +21,16 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.holadude.URank"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "bd86c2ea-e24a-49be-b043-c32e02260497"
+      }
     }
   }
 }
