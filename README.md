@@ -14,19 +14,10 @@ URank was primarily developed by **[Zander Hesse](https://github.com/HolaDuded)*
 
 Both **Christian Rhoden** and **Evan Lozen** helped with private beta testing.
 
-### Original Group Members
- - **Bennett Markevitch**
- - **Mia Woller**
- - **Ryan McCallum**
-
 ## Discord Server
 If you want to join the community Discord server to connect, get help, or just to join it, here is a **[link](https://discord.gg/NfvhxJBwCk)**.
 
 ## FAQ
-**Q:** What do you mean Original Group Members?
-
-**A:** This app was originally developed by **Zander** for the Congressional App Challenge in a group with the rest of the original group members.  After we had finished the App Challenge, the app had potential, so **Zander** started over and redesigned the app to contain more features and run better.
-
 
 **Q:** How do I use this app?
 
