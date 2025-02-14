@@ -23,11 +23,6 @@ If you want to join the community Discord server to connect, get help, or just t
 
 **A:** Look just above this and it explains how to use this app.  If that is confusing, join the community Discord server above.
 
-
-**Q:** I found a similar app on GitHub that hasn't been updated in a long time and looks similar to this app, what's the deal with that?
-
-**A:** That is the GitHub repository that was used by the original group during the Congressional App Challenge to develop this app, if you look at previous version of this you will see that the one of the first commits is called "Transferred files from old copy", this is referencing code and files that were copied over from the original development.
-
 ## Contact
 The best way to contact **Zander** is probably via Discord.
 
