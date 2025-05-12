@@ -947,8 +947,9 @@ export default function App() {
                           <Text style={{fontSize: 24, marginLeft: 3.5, shadowOpacity: 0.25, paddingLeft: 5, color: colorOfText, shadowOpacity: 0.5}}>{item.label}</Text>
                           <TouchableOpacity onPress={() => {removalTriggered(index)}}>
                             <View style={{backgroundColor: lighterRed, display: 'flex', shadowOpacity: 0.25, textAlign: 'center', marginRight: 5, alignItems: 'center', justifyContent: 'center', height: deviceHeightPart, width: deviceHeightPart, borderWidth: 1, borderRadius: 25}}>
-                              <Text style={{fontSize: 24, shadowOpacity: 0.25, fontWeight: 'bold', paddingBottom: 2}}>–</Text>
-                            </View>
+                              {/* <Text style={{fontSize: 24, shadowOpacity: 0.25, fontWeight: 'bold', paddingBottom: 5}}>–</Text> */}
+                              <Image source={deleteMenuIcon} style={{height: 24, width: 24}}/>
+                          </View>
                           </TouchableOpacity>
                         </View>
                       }
@@ -960,23 +961,23 @@ export default function App() {
                     animationType='slide'
                     // animationType='fade'
                     style={{}}>
-                      {/* <BlurView> */}
+                      <BlurView>
                         <SafeAreaView>
                           <View style = {{backgroundColor: 'white', borderRadius: 15, width: '80%', left: '10%', height: 200, top: (deviceHeight - 200)/2, justifyContent: 'center', alignContent: 'center'}}>
                             <Text style = {{position: 'absolute', top: '5%', textAlign: 'center', padding: 15}}>By deleting this college any notes and ratings will be permanently deleted. If you recreate the same college the notes and ratings will not be relinked.  Upon deletion there is no way to restore any data.</Text>{/*  Any photos linked will not be deleted.  If you recreate this college any photos previously linked to the college will not be linked.</Text>*/}
                             <TouchableOpacity onPress={() => {setDeleteConfirmVis(false)}}
-                              style = {{position: 'absolute', backgroundColor: 'green', borderWidth: 0, borderColor: 'black', borderRadius: 5, bottom: '10%', left: '15%'}}
+                              style = {{position: 'absolute', backgroundColor: 'green', borderWidth: 1, borderColor: 'black', borderRadius: 5, bottom: '10%', left: '15%'}}
                               >
                               <Text style = {{padding: 5}}>Cancel</Text>
                             </TouchableOpacity>
                             <TouchableOpacity onPress={() => {removeValueCollage(indexOfRemoval); setDeleteConfirmVis(false)}}
-                              style = {{backgroundColor: 'red', borderWidth: 0, borderColor: 'black', borderRadius: 5, position: 'absolute', bottom: '10%', right: '15%'}}
+                              style = {{backgroundColor: 'red', borderWidth: 1, borderColor: 'black', borderRadius: 5, position: 'absolute', bottom: '10%', right: '15%'}}
                               >
                               <Text style = {{padding: 5}}>Confirm and Remove</Text>
                             </TouchableOpacity>
                           </View>
                         </SafeAreaView>
-                      {/* </BlurView> */}
+                      </BlurView>
                     </Modal>
 
 
