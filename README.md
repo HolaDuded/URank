@@ -1,7 +1,7 @@
 # URank
 ### College Ranking App
 
-This app is designed to make the college searching process easier.  It has spaces to save all notes pertaining to each college that you add.  You are also able to rank each college on how each specific element of that colllege works for you.  Then, if you also set how important that element is to you in settings, the app will automatically calculate a rating for the college and, therefore, make it easier to select a college for you.
+This app is designed to make the college searching process easier.  It has spaces to save all notes pertaining to each college that you add.  You are also able to rank each college on how each specific element of that college works for you.  Then, if you also set how important that element is to you in settings, the app will automatically calculate a rating for the college and, therefore, make it easier to select a college for you.
 
 To install this app simply use the app store on your device.  Currently this app is only available on the Play Store, but it will be on the App Store soon.
 
